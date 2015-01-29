@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "advancedmanager",
+    "name": "Advanced Manager",
+    "description": "Programmable Computers!",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["ReneHollander"],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

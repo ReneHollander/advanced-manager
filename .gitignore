@@ -1,0 +1,10 @@
+build/
+workingdir/
+.gradle/
+out/
+
+*.iml
+*.ipr
+*.iws
+
+.settings/
