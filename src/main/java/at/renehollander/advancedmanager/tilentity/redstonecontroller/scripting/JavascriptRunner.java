@@ -1,4 +1,8 @@
-package at.renehollander.advancedmanager.tilentity.redstonecontroller;
+package at.renehollander.advancedmanager.tilentity.redstonecontroller.scripting;
+
+import at.renehollander.advancedmanager.tilentity.redstonecontroller.RedstoneControllerProperties;
+import at.renehollander.advancedmanager.tilentity.redstonecontroller.api.Chat;
+import at.renehollander.advancedmanager.tilentity.redstonecontroller.api.Tick;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;

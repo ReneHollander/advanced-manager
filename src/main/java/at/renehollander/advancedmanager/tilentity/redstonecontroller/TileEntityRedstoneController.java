@@ -1,13 +1,18 @@
 package at.renehollander.advancedmanager.tilentity.redstonecontroller;
 
 import at.renehollander.advancedmanager.tilentity.TileEntityAwesomeMod;
+import at.renehollander.advancedmanager.tilentity.redstonecontroller.scripting.JavascriptRunner;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.UUID;
+
 public class TileEntityRedstoneController extends TileEntityAwesomeMod {
+
+    private RedstoneController redstoneController;
 
     private boolean firstUpdate;
 
@@ -19,21 +24,15 @@ public class TileEntityRedstoneController extends TileEntityAwesomeMod {
 
     public TileEntityRedstoneController() {
 
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+        } else if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
+        }
+
         this.firstUpdate = true;
         this.props = new RedstoneControllerProperties();
         if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-            doServerStuff();
-        } else if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-            doClientStuff();
+            this.runner = new JavascriptRunner(this.props);
         }
-    }
-
-    private void doClientStuff() {
-
-    }
-
-    private void doServerStuff() {
-        this.runner = new JavascriptRunner(props);
     }
 
     @SideOnly(Side.CLIENT)
@@ -95,4 +94,14 @@ public class TileEntityRedstoneController extends TileEntityAwesomeMod {
         super.readFromNBT(tag);
         this.getProps().readFromNBT(tag.getCompoundTag("props"));
     }
+
+    public RedstoneController newRedstoneContoller(UUID uuid) {
+        if (!worldObj.isRemote) {
+            this.redstoneController = new ServerRedstoneController(uuid, this);
+        } else {
+            this.redstoneController = new ClientRedstoneController(uuid, this);
+        }
+        return this.redstoneController;
+    }
+
 }

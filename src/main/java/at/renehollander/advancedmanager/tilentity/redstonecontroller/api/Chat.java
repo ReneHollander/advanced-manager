@@ -1,4 +1,4 @@
-package at.renehollander.advancedmanager.tilentity.redstonecontroller;
+package at.renehollander.advancedmanager.tilentity.redstonecontroller.api;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
