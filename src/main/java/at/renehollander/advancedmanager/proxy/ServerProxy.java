@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 public class ServerProxy extends CommonProxy {
     @Override
     public void preInit() {
-        
+
     }
 
     @Override
@@ -21,5 +21,15 @@ public class ServerProxy extends CommonProxy {
     @Override
     public EntityPlayer getClientPlayer() {
         return null;
+    }
+
+    @Override
+    public boolean isServer() {
+        return true;
+    }
+
+    @Override
+    public boolean isClient() {
+        return false;
     }
 }

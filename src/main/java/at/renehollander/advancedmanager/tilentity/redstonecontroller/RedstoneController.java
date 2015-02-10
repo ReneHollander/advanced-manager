@@ -1,6 +1,6 @@
 package at.renehollander.advancedmanager.tilentity.redstonecontroller;
 
-import at.renehollander.advancedmanager.tilentity.redstonecontroller.TileEntityRedstoneController;
+import at.renehollander.advancedmanager.AdvancedManager;
 
 import java.util.UUID;
 
@@ -37,4 +37,15 @@ public abstract class RedstoneController {
     public String getMainScript() {
         return mainScript;
     }
+
+    public static RedstoneController fromUUID(UUID uuid, TileEntityRedstoneController te) {
+        if (AdvancedManager.proxy().isServer()) {
+            return new ServerRedstoneController(uuid, te);
+        } else if (AdvancedManager.proxy().isClient()) {
+            return new ClientRedstoneController(uuid, te);
+        } else {
+            throw new IllegalStateException("This can't happen...");
+        }
+    }
+
 }

@@ -12,4 +12,8 @@ public abstract class CommonProxy {
 
     public abstract EntityPlayer getClientPlayer();
 
+    public abstract boolean isServer();
+
+    public abstract boolean isClient();
+
 }

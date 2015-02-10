@@ -1,6 +1,6 @@
 package at.renehollander.advancedmanager.network;
 
-import at.renehollander.advancedmanager.AwesomeMod;
+import at.renehollander.advancedmanager.AdvancedManager;
 import at.renehollander.advancedmanager.Reference;
 import at.renehollander.advancedmanager.tilentity.TileEntityAwesomeMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -30,7 +30,7 @@ public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPack
         int x = buf.readInt();
         int y = buf.readInt();
         int z = buf.readInt();
-        TileEntity te = AwesomeMod.proxy.getClientPlayer().worldObj.getTileEntity(x, y, z);
+        TileEntity te = AdvancedManager.proxy.getClientPlayer().worldObj.getTileEntity(x, y, z);
         if(te instanceof TileEntityAwesomeMod) {
             ((TileEntityAwesomeMod)te).readFromPacket(buf);
         }

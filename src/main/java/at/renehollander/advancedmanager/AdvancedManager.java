@@ -16,10 +16,10 @@ import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 
 @Mod(modid = Reference.MODID, name = Reference.MOD_NAME, version = Reference.VERSION)
-public class AwesomeMod {
+public class AdvancedManager {
 
     @Mod.Instance(Reference.MODID)
-    public static AwesomeMod instance;
+    public static AdvancedManager instance;
 
     @SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.SERVER_PROXY_CLASS)
     public static CommonProxy proxy;
@@ -51,4 +51,11 @@ public class AwesomeMod {
         Log.info("Post Initialization Complete!");
     }
 
+    public static AdvancedManager instance() {
+        return instance;
+    }
+
+    public static CommonProxy proxy() {
+        return proxy;
+    }
 }
