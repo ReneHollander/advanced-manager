@@ -1,4 +1,4 @@
-package at.renehollander.advancedmanager.block;
+package at.renehollander.advancedmanager.block.base;
 
 import at.renehollander.advancedmanager.Reference;
 import at.renehollander.advancedmanager.creative.AwesomeModCreativeTab;
@@ -7,11 +7,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public abstract class BlockAwesomeModTileEntity extends BlockContainer implements IBlockAwesomeMod {
+public abstract class BlockAdvancedManagerTileEntity extends BlockContainer implements IBlockAdvancedManager {
 
     private final String name;
 
-    public BlockAwesomeModTileEntity(Material material, String name, Class<? extends TileEntity> teClass) {
+    public BlockAdvancedManagerTileEntity(Material material, String name, Class<? extends TileEntity> teClass) {
         super(material);
         this.name = name;
 

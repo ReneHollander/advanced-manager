@@ -1,4 +1,4 @@
-package at.renehollander.advancedmanager.block;
+package at.renehollander.advancedmanager.block.base;
 
 import at.renehollander.advancedmanager.Reference;
 import at.renehollander.advancedmanager.creative.AwesomeModCreativeTab;
@@ -6,11 +6,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public abstract class BlockAwesomeMod extends Block implements IBlockAwesomeMod {
+public abstract class BlockAdvancedManager extends Block implements IBlockAdvancedManager {
 
     private final String name;
 
-    public BlockAwesomeMod(Material material, String name) {
+    public BlockAdvancedManager(Material material, String name) {
         super(material);
         this.name = name;
 
@@ -20,7 +20,7 @@ public abstract class BlockAwesomeMod extends Block implements IBlockAwesomeMod 
         GameRegistry.registerBlock(this, Reference.MODID + ":" + getName());
     }
 
-    public BlockAwesomeMod(String name) {
+    public BlockAdvancedManager(String name) {
         this(Material.rock, name);
     }
 

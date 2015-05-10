@@ -1,5 +1,6 @@
 package at.renehollander.advancedmanager.block;
 
+import at.renehollander.advancedmanager.block.base.BlockAdvancedManagerTileEntity;
 import at.renehollander.advancedmanager.tilentity.redstonecontroller.GUI;
 import at.renehollander.advancedmanager.tilentity.redstonecontroller.TileEntityRedstoneController;
 import net.minecraft.block.material.Material;
@@ -11,7 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockRedstoneController extends BlockAwesomeModTileEntity {
+public class BlockRedstoneController extends BlockAdvancedManagerTileEntity {
 
     public BlockRedstoneController() {
         super(Material.wood, "redstonecontroller", TileEntityRedstoneController.class);

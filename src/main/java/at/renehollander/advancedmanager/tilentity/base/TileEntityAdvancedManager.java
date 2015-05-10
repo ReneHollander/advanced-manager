@@ -1,4 +1,4 @@
-package at.renehollander.advancedmanager.tilentity;
+package at.renehollander.advancedmanager.tilentity.base;
 
 import at.renehollander.advancedmanager.network.DescriptionHandler;
 import io.netty.buffer.Unpooled;
@@ -7,7 +7,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
-public abstract class TileEntityAwesomeMod extends TileEntity {
+public abstract class TileEntityAdvancedManager extends TileEntity {
 
     @Override
     public Packet getDescriptionPacket() {

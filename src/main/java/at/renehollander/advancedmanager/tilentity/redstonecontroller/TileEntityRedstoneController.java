@@ -1,7 +1,7 @@
 package at.renehollander.advancedmanager.tilentity.redstonecontroller;
 
 import at.renehollander.advancedmanager.AdvancedManager;
-import at.renehollander.advancedmanager.tilentity.TileEntityAwesomeMod;
+import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
 import at.renehollander.advancedmanager.tilentity.redstonecontroller.scripting.JavascriptRunner;
 import at.renehollander.advancedmanager.util.AdvancedManagerNBTUtils;
 import net.minecraft.block.state.IBlockState;
@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.UUID;
 
-public class TileEntityRedstoneController extends TileEntityAwesomeMod implements ITickable {
+public class TileEntityRedstoneController extends TileEntityAdvancedManager implements ITickable {
 
     private RedstoneController redstoneController;
 

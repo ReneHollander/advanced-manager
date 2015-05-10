@@ -14,6 +14,6 @@ public class AwesomeModCreativeTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return Item.getItemFromBlock(ModBlocks.redstoneController);
+        return Item.getItemFromBlock(ModBlocks.redstonecontroller);
     }
 }

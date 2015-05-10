@@ -21,6 +21,10 @@ public class Log {
         log(Level.ERROR, object);
     }
 
+    public static void error(Object object, Throwable t) {
+        FMLLog.log(Reference.MOD_NAME, Level.ERROR, t, String.valueOf(object));
+    }
+
     public static void fatal(Object object) {
         log(Level.FATAL, object);
     }
@@ -40,4 +44,6 @@ public class Log {
     public static void warn(Object object) {
         log(Level.WARN, object);
     }
+
+
 }

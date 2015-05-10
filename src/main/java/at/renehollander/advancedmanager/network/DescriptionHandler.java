@@ -2,7 +2,7 @@ package at.renehollander.advancedmanager.network;
 
 import at.renehollander.advancedmanager.AdvancedManager;
 import at.renehollander.advancedmanager.Reference;
-import at.renehollander.advancedmanager.tilentity.TileEntityAwesomeMod;
+import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,18 +21,18 @@ public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPack
         NetworkRegistry.INSTANCE.newChannel(CHANNEL, new DescriptionHandler());
     }
 
-    public static void init(){
+    public static void init() {
         //not actually doing anything here, apart from loading the class. If the channel registry goes in here, Netty will throw a duplicate
         //channel error.
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FMLProxyPacket msg) throws Exception{
-        ByteBuf buf = msg.payload();
-        BlockPos pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
+    protected void channelRead0(ChannelHandlerContext ctx, FMLProxyPacket msg) throws Exception {
+        PacketBuffer buf = new PacketBuffer(msg.payload());
+        BlockPos pos = buf.readBlockPos();
         TileEntity te = AdvancedManager.proxy.getClientPlayer().worldObj.getTileEntity(pos);
-        if(te instanceof TileEntityAwesomeMod) {
-            ((TileEntityAwesomeMod)te).readFromPacket(new PacketBuffer(buf));
+        if (te instanceof TileEntityAdvancedManager) {
+            ((TileEntityAdvancedManager) te).readFromPacket(new PacketBuffer(buf));
         }
     }
 
