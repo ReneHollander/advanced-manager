@@ -1,10 +1,15 @@
+# gradle
 build/
-workingdir/
 .gradle/
-out/
+workingDir/
 
+# intellij
+out/
 *.iml
 *.ipr
 *.iws
 
+# eclipse
 .settings/
+.project
+.classpath

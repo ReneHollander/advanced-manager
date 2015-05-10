@@ -1,7 +1,7 @@
 package at.renehollander.advancedmanager.util;
 
 import at.renehollander.advancedmanager.Reference;
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 public class Log {

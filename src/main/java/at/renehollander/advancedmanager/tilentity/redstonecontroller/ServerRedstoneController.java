@@ -1,8 +1,5 @@
 package at.renehollander.advancedmanager.tilentity.redstonecontroller;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import java.util.UUID;
 
 public class ServerRedstoneController extends RedstoneController {

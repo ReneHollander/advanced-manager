@@ -3,13 +3,15 @@ package at.renehollander.advancedmanager.network;
 import at.renehollander.advancedmanager.AdvancedManager;
 import at.renehollander.advancedmanager.Reference;
 import at.renehollander.advancedmanager.tilentity.TileEntityAwesomeMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 @ChannelHandler.Sharable
 public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPacket> {
@@ -27,12 +29,10 @@ public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPack
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FMLProxyPacket msg) throws Exception{
         ByteBuf buf = msg.payload();
-        int x = buf.readInt();
-        int y = buf.readInt();
-        int z = buf.readInt();
-        TileEntity te = AdvancedManager.proxy.getClientPlayer().worldObj.getTileEntity(x, y, z);
+        BlockPos pos = new BlockPos(buf.readInt(), buf.readInt(), buf.readInt());
+        TileEntity te = AdvancedManager.proxy.getClientPlayer().worldObj.getTileEntity(pos);
         if(te instanceof TileEntityAwesomeMod) {
-            ((TileEntityAwesomeMod)te).readFromPacket(buf);
+            ((TileEntityAwesomeMod)te).readFromPacket(new PacketBuffer(buf));
         }
     }
 

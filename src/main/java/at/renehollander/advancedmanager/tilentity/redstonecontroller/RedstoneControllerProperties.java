@@ -1,26 +1,28 @@
 package at.renehollander.advancedmanager.tilentity.redstonecontroller;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import io.netty.buffer.ByteBuf;
+import at.renehollander.advancedmanager.util.AdvancedManagerByteBufUtils;
+import at.renehollander.advancedmanager.util.AdvancedManagerNBTUtils;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.EnumFacing;
 
-import java.util.Arrays;
+import java.util.EnumMap;
 
 public class RedstoneControllerProperties {
 
     private boolean dirty;
 
     private String script;
-    private int[] powerlevel;
+    private EnumMap<EnumFacing, Integer> powerLevel;
 
     public RedstoneControllerProperties() {
         this.script = "var Thread = Java.type(\"java.lang.Thread\");\nwhile (true) {\n\tfor (i = 0; i < 16; i++) {\n\t\tprops.setPowerLevel(2, i);\n\t\tchat.writeMessage(\"Hello!\");\n\t\tThread.sleep(500);\n\t}\n}";
-        this.powerlevel = new int[6];
+        this.powerLevel = new EnumMap<EnumFacing, Integer>(EnumFacing.class);
     }
 
-    public boolean setPowerLevel(int side, int level) {
-        if (side >= 0 && side <= 5 && level >= 0 && level <= 15) {
-            this.powerlevel[side] = level;
+    public boolean setPowerLevel(EnumFacing side, int level) {
+        if (level >= 0 && level <= 15) {
+            this.powerLevel.put(side, level);
             this.markDirty();
             return true;
         } else {
@@ -28,16 +30,12 @@ public class RedstoneControllerProperties {
         }
     }
 
-    public int getPowerLevel(int side) {
-        if (side >= 0 && side <= 5) {
-            return this.powerlevel[side];
-        } else {
-            return -1;
-        }
+    public int getPowerLevel(EnumFacing side) {
+        return this.powerLevel.get(side);
     }
 
     public void reset() {
-        Arrays.fill(this.powerlevel, 0);
+        this.powerLevel.clear();
         this.markDirty();
     }
 
@@ -50,28 +48,24 @@ public class RedstoneControllerProperties {
         this.markDirty();
     }
 
-    public void writeToPacket(ByteBuf buf) {
-        ByteBufUtils.writeUTF8String(buf, script);
-        for (int i = 0; i < this.powerlevel.length; i++) {
-            buf.writeInt(this.powerlevel[i]);
-        }
+    public void writeToPacket(PacketBuffer buf) {
+        buf.writeString(script);
+        AdvancedManagerByteBufUtils.writeEnumMap(buf, EnumFacing.class, this.powerLevel);
     }
 
-    public void readFromPacket(ByteBuf buf) {
-        this.script = ByteBufUtils.readUTF8String(buf);
-        for (int i = 0; i < this.powerlevel.length; i++) {
-            this.powerlevel[i] = buf.readInt();
-        }
+    public void readFromPacket(PacketBuffer buf) {
+        this.script = buf.readStringFromBuffer(Integer.MAX_VALUE);
+        AdvancedManagerByteBufUtils.readEnumMap(buf, EnumFacing.class, this.powerLevel);
     }
 
     public void writeToNBT(NBTTagCompound tag) {
-        tag.setIntArray("powerLevels", this.powerlevel);
         tag.setString("script", this.script);
+        AdvancedManagerNBTUtils.writeEnumMap(tag, "powerlevels", EnumFacing.class, this.powerLevel);
     }
 
     public void readFromNBT(NBTTagCompound tag) {
-        this.powerlevel = tag.getIntArray("powerLevels");
         this.script = tag.getString("script");
+        AdvancedManagerNBTUtils.readEnumMap(tag, "powerlevels", EnumFacing.class, this.powerLevel);
         this.markDirty();
     }
 

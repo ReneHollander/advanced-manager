@@ -1,94 +1,54 @@
 buildscript {
-  repositories {
-    mavenCentral()
-    maven {
-      name = "forge"
-        url = "http://files.minecraftforge.net/maven"
-      }
-      maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/repositories/snapshots/"
-      }
-  }
-  dependencies {
-    classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-  }
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
 }
 
 apply plugin: 'forge'
 
-version = "0.0.1"
-group = "at.renehollander.advancedmanager"
+version = "1.0"
+group= "at.renehollander.advancedmanager"
 archivesBaseName = "advancedmanager"
 
 minecraft {
-  version = "1.7.10-10.13.2.1230"
-  runDir = "workingdir"
+    version = "1.8-11.14.1.1402"
+    mappings = "snapshot_20141130"
+    runDir = "workingDir"
 }
 
 dependencies {
-  compile 'com.fifesoft:rsyntaxtextarea:2.5.6'
-  compile 'com.fifesoft:languagesupport:2.5.6'
-  compile 'com.fifesoft:autocomplete:2.5.4'
-  compile 'org.python:jython:2.7-b3'
+    compile 'com.fifesoft:rsyntaxtextarea:2.5.6'
+    compile 'com.fifesoft:languagesupport:2.5.6'
+    compile 'com.fifesoft:autocomplete:2.5.4'
+    compile 'org.python:jython:2.7-b3'
 }
 
 processResources {
-  // this will ensure that this task is redone when the versions change.
-  inputs.property "version", project.version
-  inputs.property "mcversion", project.minecraft.version
-  // replace stuff in mcmod.info, nothing else
-  from(sourceSets.main.resources.srcDirs) {
-    include 'mcmod.info'
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
-    // replace version and mcversion
-    expand 'version': project.version, 'mcversion': project.minecraft.version
-  }
-
-  // copy everything else, thats not the mcmod.info
-  from(sourceSets.main.resources.srcDirs) {
-    exclude 'mcmod.info'
-  }
-}
-
-processResources.doLast {
-
-  description 'Copies resource files to dir FML expects resourcePack to be'
-
-  // this will ensure that this task is redone when the versions change.
-  inputs.property "version", project.version
-  inputs.property "mcversion", project.minecraft.version
-
-  ext.srcFiles = "$projectDir/src/main/resources"
-  ext.destDir = "$projectDir/build/classes/main"
-
-  // registering inputs & outputs allow gradle to skip if UP-TO-DATE
-  inputs.files srcFiles
-  outputs.dir destDir
-
-  println 'starting processResources'
-  println 'srcFiles: ' + srcFiles
-  println 'destDir: ' + destDir
-
-  copy {
     // replace stuff in mcmod.info, nothing else
-    from(srcFiles)
-    into(destDir)
-    include 'mcmod.info'
-    // replace version and mcversion
-    expand 'version': project.version, 'mcversion': project.minecraft.version
-  }
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
 
-  copy {
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
     // copy everything else, thats not the mcmod.info
-    from(srcFiles)
-    into(destDir)
-    exclude 'mcmod.info'
-  }
-}
-
-sourceSets {
-  main {
-    output.resourcesDir = output.classesDir
-  }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
 }

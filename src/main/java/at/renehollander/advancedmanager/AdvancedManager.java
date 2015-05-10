@@ -1,19 +1,15 @@
 package at.renehollander.advancedmanager;
 
 import at.renehollander.advancedmanager.init.ModBlocks;
-import at.renehollander.advancedmanager.init.ModTileEntities;
 import at.renehollander.advancedmanager.network.DescriptionHandler;
 import at.renehollander.advancedmanager.network.NetworkHandler;
 import at.renehollander.advancedmanager.proxy.CommonProxy;
 import at.renehollander.advancedmanager.util.Log;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-
-import javax.script.ScriptEngineFactory;
-import javax.script.ScriptEngineManager;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = Reference.MODID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class AdvancedManager {
@@ -26,13 +22,7 @@ public class AdvancedManager {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-        for (ScriptEngineFactory sef : scriptEngineManager.getEngineFactories()) {
-            System.out.println(sef.getEngineName() + ": " + sef.getLanguageName());
-        }
-
         ModBlocks.init();
-        ModTileEntities.init();
         proxy.preInit();
         NetworkHandler.init();
         DescriptionHandler.init();

@@ -1,20 +1,21 @@
 package at.renehollander.advancedmanager.tilentity.redstonecontroller;
 
+import at.renehollander.advancedmanager.AdvancedManager;
 import at.renehollander.advancedmanager.tilentity.TileEntityAwesomeMod;
 import at.renehollander.advancedmanager.tilentity.redstonecontroller.scripting.JavascriptRunner;
-import at.renehollander.advancedmanager.util.AdvancedManagerByteBufUtils;
 import at.renehollander.advancedmanager.util.AdvancedManagerNBTUtils;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.UUID;
 
-public class TileEntityRedstoneController extends TileEntityAwesomeMod {
+public class TileEntityRedstoneController extends TileEntityAwesomeMod implements ITickable {
 
     private RedstoneController redstoneController;
 
@@ -27,13 +28,10 @@ public class TileEntityRedstoneController extends TileEntityAwesomeMod {
     private GUI gui;
 
     public TileEntityRedstoneController() {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-        } else if (FMLCommonHandler.instance().getEffectiveSide().isClient()) {
-        }
-
+        this.redstoneController = RedstoneController.fromUUID(UUID.randomUUID(), this);
         this.firstUpdate = true;
         this.props = new RedstoneControllerProperties();
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+        if (AdvancedManager.proxy().isServer()) {
             this.runner = new JavascriptRunner(this.props);
         }
     }
@@ -48,25 +46,31 @@ public class TileEntityRedstoneController extends TileEntityAwesomeMod {
         this.gui = gui;
     }
 
-    @Override
-    public void updateEntity() {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+        return (oldState.getBlock() != newSate.getBlock());
+    }
+
+    public void tick() {
         if (firstUpdate) {
             firstUpdate = false;
-            if (this.getRedstoneController() == null) {
-                this.redstoneController = RedstoneController.fromUUID(UUID.randomUUID(), this);
-            }
             if (!worldObj.isRemote) {
                 this.runner.start();
             }
         }
         if (props.isDirty()) {
             props.resetDirty();
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, this.getBlockType());
+            worldObj.markBlockForUpdate(pos);
+            worldObj.notifyBlockOfStateChange(pos, this.getBlockType());
         }
         if (!worldObj.isRemote) {
             this.runner.tick();
         }
+    }
+
+    @Override
+    public void onChunkUnload() {
+        super.onChunkUnload();
+        // TODO stop everything
     }
 
     public RedstoneControllerProperties getProps() {
@@ -82,15 +86,15 @@ public class TileEntityRedstoneController extends TileEntityAwesomeMod {
     }
 
     @Override
-    public void writeToPacket(ByteBuf buf) {
-        AdvancedManagerByteBufUtils.writeUUID(buf, this.getRedstoneController().getUuid());
+    public void writeToPacket(PacketBuffer buf) {
+        buf.writeUuid(this.getRedstoneController().getUuid());
         props.writeToPacket(buf);
     }
 
     @Override
-    public void readFromPacket(ByteBuf buf) {
-        UUID uuid = AdvancedManagerByteBufUtils.readUUID(buf);
-        if (this.getRedstoneController() == null) {
+    public void readFromPacket(PacketBuffer buf) {
+        UUID uuid = buf.readUuid();
+        if (!this.getRedstoneController().getUuid().equals(uuid)) {
             this.redstoneController = RedstoneController.fromUUID(uuid, this);
         }
         props.readFromPacket(buf);
@@ -106,9 +110,8 @@ public class TileEntityRedstoneController extends TileEntityAwesomeMod {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         UUID uuid = AdvancedManagerNBTUtils.getUUID(tag, "uuid");
-        if (this.getRedstoneController() == null) {
-            RedstoneController.fromUUID(uuid, this);
+        if (!this.getRedstoneController().getUuid().equals(uuid)) {
+            this.redstoneController = RedstoneController.fromUUID(uuid, this);
         }
     }
-
 }

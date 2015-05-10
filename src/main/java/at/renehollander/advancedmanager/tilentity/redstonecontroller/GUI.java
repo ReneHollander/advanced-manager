@@ -56,6 +56,6 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void handleSaveButton() {
-        NetworkHandler.sendToServer(new MessageRedstoneControllerUpdateScript(terc.xCoord, terc.yCoord, terc.zCoord, this.codeArea.getText()));
+        NetworkHandler.sendToServer(new MessageRedstoneControllerUpdateScript(terc.getPos(), this.codeArea.getText()));
     }
 }
