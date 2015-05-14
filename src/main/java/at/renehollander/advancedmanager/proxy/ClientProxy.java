@@ -23,6 +23,8 @@ public class ClientProxy extends CommonProxy {
         // Blocks
         registerItemRenderer(ModBlocks.redstonecontroller);
         registerItemRenderer(ModBlocks.redstonescreen);
+        registerItemRenderer(ModBlocks.networkcable);
+        registerItemRenderer(ModBlocks.networkcontroller);
 
         // TileEntitySpecialRenderers
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRedstoneScreen.class, new TileEntityRedstoneScreenRenderer());

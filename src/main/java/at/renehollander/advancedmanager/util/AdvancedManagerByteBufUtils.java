@@ -47,6 +47,7 @@ public class AdvancedManagerByteBufUtils {
             int size = buf.readInt();
             if (size == -1) return null;
             byte[] data = new byte[size];
+            buf.readBytes(data);
             ByteArrayInputStream bais = new ByteArrayInputStream(data);
             ObjectInputStream ois = new ObjectInputStream(bais);
             Object obj = ois.readObject();

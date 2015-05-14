@@ -54,7 +54,7 @@ public class RedstoneControllerProperties {
     }
 
     public void readFromPacket(PacketBuffer buf) {
-        this.script = buf.readStringFromBuffer(Integer.MAX_VALUE);
+        this.script = buf.readStringFromBuffer(Integer.MAX_VALUE / 4 - 1);
         AdvancedManagerByteBufUtils.readEnumMap(buf, EnumFacing.class, this.powerLevel);
     }
 

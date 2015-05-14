@@ -8,6 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,11 +16,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.UUID;
 
-public class TileEntityRedstoneController extends TileEntityAdvancedManager implements ITickable {
+public class TileEntityRedstoneController extends TileEntityAdvancedManager implements IUpdatePlayerListBox {
 
     private RedstoneController redstoneController;
-
-    private boolean firstUpdate;
 
     private RedstoneControllerProperties props;
     private JavascriptRunner runner;
@@ -29,11 +28,7 @@ public class TileEntityRedstoneController extends TileEntityAdvancedManager impl
 
     public TileEntityRedstoneController() {
         this.redstoneController = RedstoneController.fromUUID(UUID.randomUUID(), this);
-        this.firstUpdate = true;
         this.props = new RedstoneControllerProperties();
-        if (AdvancedManager.proxy().isServer()) {
-            this.runner = new JavascriptRunner(this.props);
-        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -50,13 +45,7 @@ public class TileEntityRedstoneController extends TileEntityAdvancedManager impl
         return (oldState.getBlock() != newSate.getBlock());
     }
 
-    public void tick() {
-        if (firstUpdate) {
-            firstUpdate = false;
-            if (!worldObj.isRemote) {
-                this.runner.start();
-            }
-        }
+    public void update() {
         if (props.isDirty()) {
             props.resetDirty();
             worldObj.markBlockForUpdate(pos);
@@ -66,6 +55,15 @@ public class TileEntityRedstoneController extends TileEntityAdvancedManager impl
             this.runner.tick();
         }
     }
+/*
+    @Override
+    public void firstTick() {
+        if (!worldObj.isRemote) {
+            this.runner = new JavascriptRunner(this.props);
+            this.runner.start();
+        }
+    }
+    */
 
     @Override
     public void onChunkUnload() {

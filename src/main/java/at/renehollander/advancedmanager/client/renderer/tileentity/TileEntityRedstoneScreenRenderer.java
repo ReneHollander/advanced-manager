@@ -1,11 +1,14 @@
 package at.renehollander.advancedmanager.client.renderer.tileentity;
 
 import at.renehollander.advancedmanager.client.renderer.tileentity.base.TileEntityAdvancedManagerRenderer;
+import at.renehollander.advancedmanager.client.util.FrameBufferObject;
 import at.renehollander.advancedmanager.tilentity.TileEntityRedstoneScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.EnumFacing;
+import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -56,10 +59,17 @@ public class TileEntityRedstoneScreenRenderer extends TileEntityAdvancedManagerR
     }
     */
 
+    private FrameBufferObject fbo;
+
+    public TileEntityRedstoneScreenRenderer() {
+        fbo = new FrameBufferObject(300, 300, true);
+        fbo.initialize();
+    }
+
     @Override
     public void render(TileEntityRedstoneScreen te, double x, double y, double z, float partialTicks, int blockDamageProgress) {
         GlStateManager.translate(x, y, z);
-        GlStateManager.disableLighting();
+        //GlStateManager.disableLighting();
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         /*
@@ -83,7 +93,54 @@ public class TileEntityRedstoneScreenRenderer extends TileEntityAdvancedManagerR
         setColor(255, 0, 0);
         fillCircle(150, 150, 150);
 
-        GlStateManager.enableLighting();
+        Framebuffer frameBuffer = null;
+        try {
+            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glPushMatrix();
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glPushMatrix();
+
+            // setup modelview matrix
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glLoadIdentity();
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glLoadIdentity();
+
+            GL11.glOrtho(0.0D, 1.0, 1.0, 0.0, -10.0, 10.0);
+            GL11.glEnable(GL11.GL_CULL_FACE);
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GL11.glDisable(GL11.GL_LIGHTING);
+            GL11.glDisable(GL11.GL_BLEND);
+            GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+
+            frameBuffer = new Framebuffer(300, 300, true);
+
+            frameBuffer.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
+            frameBuffer.framebufferClear();
+            frameBuffer.bindFramebuffer(true);
+
+            setColor(0, 170, 255);
+            fillRect(0, 0, 50, 50);
+            setColor(255, 0, 0);
+            fillCircle(150, 150, 150);
+
+            frameBuffer.deleteFramebuffer();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (frameBuffer != null) {
+                frameBuffer.deleteFramebuffer();
+            }
+            GL11.glMatrixMode(GL11.GL_PROJECTION);
+            GL11.glPopMatrix();
+            GL11.glMatrixMode(GL11.GL_MODELVIEW);
+            GL11.glPopMatrix();
+            GL11.glPopAttrib();
+        }
+
+        //GlStateManager.enableLighting();
     }
 
     private int pixelCount = 200;

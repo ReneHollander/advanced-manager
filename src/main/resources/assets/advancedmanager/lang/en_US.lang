@@ -2,3 +2,5 @@ itemGroup.advancedManager=Advanced Manager
 
 tile.advancedmanager_redstonecontroller.name=Redstone Controller
 tile.advancedmanager_redstonescreen.name=Redstone Screen
+tile.advancedmanager_networkcable.name=Network Cable
+tile.advancedmanager_networkcontroller.name=Network Controller
