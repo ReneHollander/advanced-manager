@@ -32,7 +32,7 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
         return this.grid != null;
     }
 
-    public boolean discover() {
+    public void discover() {
         // find all nearby nodes
         Set<Pair<EnumFacing, TileEntityNode>> foundNodes = findNearbyNodes();
 
@@ -47,7 +47,6 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
                 // create a new grid and asign it to the node and add itself to the graph
                 this.setConnectedGrid(new MasterlessTileEntityGrid());
                 this.getConnectedGrid().getGraph().addVertex(this);
-                return true;
             } else if (masterlessGrids.size() > 0) {
                 // and at least 1 masterless
                 // select a masterless grid to which all nodes are added
@@ -59,7 +58,6 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
                 addSelfToGrid(newgrid);
                 // merge remaining grids into new grid
                 merge(newgrid, gridstomerge);
-                return true;
             }
         } else if (masterfulGrids.size() == 1) {
             // if there is one masterful grid
@@ -68,21 +66,19 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
                 // and no masterless grids
                 // add itself to grid
                 addSelfToGrid(grid);
-                return true;
             } else if (masterlessGrids.size() > 0) {
                 // and at least 1 masterless grid
                 // add itself to grid
                 addSelfToGrid(grid);
                 // merge masterless grids into new grid
                 merge(grid, masterlessGrids);
-                return true;
             }
         } else if (masterfulGrids.size() > 1) {
             // if there is more than 1 masterful grid
             // throw exception because two masterful grids cant be connected together
             throw new RuntimeException("You cant connect to masterful networks together");
         }
-        return false;
+        ((TileEntityGrid) this.getConnectedGrid()).vis.update();
     }
 
     /**
@@ -115,15 +111,18 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
      * @param oldgrid Grid to merge into newgrid
      */
     private void merge(Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> newgrid, Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> oldgrid) {
-        for (TileEntityNode vertex : oldgrid.getRight().getGraph().vertexSet()) {
-            newgrid.getRight().getGraph().addVertex(vertex);
-            vertex.setConnectedGrid(newgrid.getRight());
+        if (newgrid.getRight() != oldgrid.getRight()) {
+            for (TileEntityNode vertex : oldgrid.getRight().getGraph().vertexSet()) {
+                newgrid.getRight().getGraph().addVertex(vertex);
+                vertex.setConnectedGrid(newgrid.getRight());
+            }
+            for (SidedEdge<TileEntityNode> edge : oldgrid.getRight().getGraph().edgeSet()) {
+                newgrid.getRight().getGraph().addEdge(edge.getV1(), edge.getV2(), edge);
+            }
+            // TODO figure out
+            ((TileEntityGrid) oldgrid.getRight()).vis.close();
         }
-        for (SidedEdge<TileEntityNode> edge : oldgrid.getRight().getGraph().edgeSet()) {
-            newgrid.getRight().getGraph().addEdge(edge.getV1(), edge.getV2(), edge);
-        }
-        // TODO figure out
-        newgrid.getRight().getGraph().addEdge(newgrid.getMiddle(), oldgrid.getMiddle(), new SidedEdge<>(newgrid.getMiddle(), oldgrid.getMiddle(), newgrid.getLeft(), oldgrid.getLeft()));
+        newgrid.getRight().getGraph().addEdge(this, oldgrid.getMiddle(), new SidedEdge<>(this, newgrid.getMiddle(), newgrid.getLeft().getOpposite(), oldgrid.getLeft()));
     }
 
     /**

@@ -9,7 +9,7 @@ public class MasterfulTileEntityGrid extends TileEntityGrid {
     }
 
     /**
-     * Gets the masternode of the grid
+     * Gets the master node of the grid
      *
      * @return master node of the grid
      */
@@ -18,8 +18,7 @@ public class MasterfulTileEntityGrid extends TileEntityGrid {
     }
 
     @Override
-    public void checkIntegrity() {
-        // TODO if network gets split, create new newworks for the resulting subnetworks
+    public void removeNode(TileEntityNode node) {
         /*
         ConnectivityInspector<TileEntityNode, SidedEdge<TileEntityNode>> connectivityInspector = new ConnectivityInspector<TileEntityNode, SidedEdge<TileEntityNode>>(this.getGraph());
         if (!connectivityInspector.isGraphConnected()) {
@@ -36,5 +35,4 @@ public class MasterfulTileEntityGrid extends TileEntityGrid {
         }
         */
     }
-
 }

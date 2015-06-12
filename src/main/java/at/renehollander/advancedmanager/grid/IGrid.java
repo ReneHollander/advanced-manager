@@ -20,10 +20,10 @@ public interface IGrid<NT extends INode> {
     public SimpleGraph<NT, SidedEdge<NT>> getGraph();
 
     /**
-     * Check the integrity of the network. If there are areas of the network not connected anymore
-     * they will get removed. When a {@link INode} gets removed, the {@link INode#onDisconnect()
-     * onDisconnect} method of the TileEntityNode gets called
+     * Remove the node from the grid. If the grid splits into subnets, create new grids from those subnets.
+     *
+     * @param node Node to remove from network
      */
-    public void checkIntegrity();
+    public void removeNode(NT node);
 
 }

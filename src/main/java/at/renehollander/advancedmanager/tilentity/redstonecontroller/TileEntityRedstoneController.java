@@ -50,7 +50,7 @@ public class TileEntityRedstoneController extends TileEntityAdvancedManager impl
             worldObj.notifyBlockOfStateChange(pos, this.getBlockType());
         }
         if (!worldObj.isRemote) {
-            this.runner.tick();
+            //this.runner.tick();
         }
     }
 /*

@@ -2,6 +2,7 @@ package at.renehollander.advancedmanager.grid.impl;
 
 import at.renehollander.advancedmanager.grid.IGrid;
 import at.renehollander.advancedmanager.grid.graph.SidedEdge;
+import at.renehollander.advancedmanager.util.Visualization;
 import org.jgrapht.graph.SimpleGraph;
 
 /**
@@ -17,8 +18,13 @@ public abstract class TileEntityGrid implements IGrid<TileEntityNode> {
 
     private SimpleGraph<TileEntityNode, SidedEdge<TileEntityNode>> graph;
 
+    public Visualization<TileEntityNode, SidedEdge<TileEntityNode>> vis;
+
     public TileEntityGrid() {
-        this.graph = new SimpleGraph<TileEntityNode, SidedEdge<TileEntityNode>>(SidedEdge.class);
+        this.graph = new SimpleGraph<>((sourceVertex, targetVertex) -> {
+            throw new IllegalAccessError("please specify the edge yourself!");
+        });
+        this.vis = new Visualization<>(this.getGraph());
     }
 
     @Override
@@ -26,4 +32,10 @@ public abstract class TileEntityGrid implements IGrid<TileEntityNode> {
         return this.graph;
     }
 
+    @Override
+    public String toString() {
+        return "TileEntityGrid{" +
+                "graph=" + graph +
+                '}';
+    }
 }

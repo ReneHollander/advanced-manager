@@ -26,5 +26,10 @@ public interface INode<NT extends INode> {
     /**
      * Check for nearby nodes. If no exisiting networks are found create a new one.
      */
-    public boolean discover();
+    public void discover();
+
+    /**
+     * Call to destroy node and create new networks from resulting subnets
+     */
+    public void destroy();
 }
