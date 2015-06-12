@@ -1,13 +1,11 @@
 package at.renehollander.advancedmanager.client.renderer.tileentity.base;
 
 import at.renehollander.advancedmanager.block.base.BlockAdvancedManagerTileEntity;
-import at.renehollander.advancedmanager.tilentity.TileEntityRedstoneScreen;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
 import at.renehollander.advancedmanager.util.Log;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import org.lwjgl.opengl.GL11;
 
 public abstract class TileEntityAdvancedManagerRenderer<T extends TileEntityAdvancedManager> extends TileEntitySpecialRenderer {
 

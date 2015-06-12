@@ -1,11 +1,9 @@
 package at.renehollander.advancedmanager.tilentity.redstonecontroller;
 
-import at.renehollander.advancedmanager.AdvancedManager;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
 import at.renehollander.advancedmanager.tilentity.redstonecontroller.scripting.JavascriptRunner;
 import at.renehollander.advancedmanager.util.AdvancedManagerNBTUtils;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.gui.IUpdatePlayerListBox;

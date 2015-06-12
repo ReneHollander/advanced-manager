@@ -2,10 +2,8 @@ package at.renehollander.advancedmanager.tilentity.base;
 
 import at.renehollander.advancedmanager.network.DescriptionHandler;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.server.gui.IUpdatePlayerListBox;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 

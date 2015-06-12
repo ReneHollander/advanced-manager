@@ -1,7 +1,6 @@
 package at.renehollander.advancedmanager.grid;
 
 import at.renehollander.advancedmanager.grid.graph.SidedEdge;
-import at.renehollander.advancedmanager.grid.old.Node;
 import org.jgrapht.graph.SimpleGraph;
 
 /**
@@ -12,14 +11,6 @@ import org.jgrapht.graph.SimpleGraph;
  * @since 1.0.0
  */
 public interface IGrid<NT extends INode> {
-
-
-    /**
-     * Gets the masternode of the grid
-     *
-     * @return master node of the grid
-     */
-    public NT getMaster();
 
     /**
      * Get the Undirected Graph that represents the node layout.
@@ -34,6 +25,5 @@ public interface IGrid<NT extends INode> {
      * onDisconnect} method of the TileEntityNode gets called
      */
     public void checkIntegrity();
-
 
 }

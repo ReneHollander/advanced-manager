@@ -3,7 +3,6 @@ package at.renehollander.advancedmanager.network;
 import at.renehollander.advancedmanager.AdvancedManager;
 import at.renehollander.advancedmanager.Reference;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
