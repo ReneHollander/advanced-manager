@@ -1,5 +1,6 @@
-package at.renehollander.advancedmanager.redstonecontroller.network;
+package at.renehollander.advancedmanager.grid.old;
 
+import at.renehollander.advancedmanager.grid.INetworkBlock;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
 import com.google.common.collect.Lists;
 import net.minecraft.block.state.IBlockState;

@@ -21,8 +21,8 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0"
-group= "at.renehollander.advancedmanager"
+version = "1.0.0"
+group = "at.renehollander.advancedmanager"
 archivesBaseName = "advancedmanager"
 
 minecraft {
@@ -37,6 +37,10 @@ dependencies {
     compile 'com.fifesoft:languagesupport:2.5.6'
     compile 'com.fifesoft:autocomplete:2.5.4'
     compile 'org.python:jython:2.7-b3'
+    compile 'org.jgrapht:jgrapht-core:0.9.1'
+    compile 'org.jgrapht:jgrapht-ext:0.9.1'
+    compile 'com.github.monkeysintown:jgraphx:3.1.2.1'
+    compile 'de.ruedigermoeller:fst:2.29'
 }
 
 processResources {
@@ -49,7 +53,7 @@ processResources {
         include 'mcmod.info'
 
         // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
     // copy everything else, thats not the mcmod.info

@@ -1,6 +1,6 @@
-package at.renehollander.advancedmanager.redstonecontroller.network;
+package at.renehollander.advancedmanager.grid.old;
 
-import com.google.common.collect.Lists;
+import at.renehollander.advancedmanager.grid.INetworkBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -28,7 +28,7 @@ public class Network {
             this.nodes.add(master);
             this.check(master, nodes);
             stop = System.nanoTime();
-            System.out.println("Time to discover network: " + ((stop - start) / 1000000D) + "ms. New Network Size: " + this.nodes.size());
+            System.out.println("Time to discover network: " + ((stop - start) / 1000000D) + "ms. New TileEntityNode Size: " + this.nodes.size());
         }
     }
 

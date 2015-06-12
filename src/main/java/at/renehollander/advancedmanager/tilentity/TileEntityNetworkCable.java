@@ -1,7 +1,11 @@
 package at.renehollander.advancedmanager.tilentity;
 
-import at.renehollander.advancedmanager.redstonecontroller.network.Node;
+import at.renehollander.advancedmanager.grid.impl.TileEntityNode;
 
-public class TileEntityNetworkCable extends Node {
+public class TileEntityNetworkCable extends TileEntityNode {
 
+    @Override
+    public void onDisconnect() {
+
+    }
 }

@@ -1,7 +1,7 @@
 package at.renehollander.advancedmanager.block;
 
 import at.renehollander.advancedmanager.block.base.BlockAdvancedManagerTileEntity;
-import at.renehollander.advancedmanager.redstonecontroller.network.INetworkBlock;
+import at.renehollander.advancedmanager.grid.INetworkBlock;
 import at.renehollander.advancedmanager.tilentity.TileEntityNetworkController;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

@@ -1,23 +1,15 @@
 package at.renehollander.advancedmanager.block;
 
-import at.renehollander.advancedmanager.block.base.BlockAdvancedManager;
 import at.renehollander.advancedmanager.block.base.BlockAdvancedManagerTileEntity;
-import at.renehollander.advancedmanager.redstonecontroller.network.INetworkBlock;
-import at.renehollander.advancedmanager.redstonecontroller.network.Node;
+import at.renehollander.advancedmanager.grid.INetworkBlock;
 import at.renehollander.advancedmanager.tilentity.TileEntityNetworkCable;
-import at.renehollander.advancedmanager.tilentity.redstonecontroller.GUI;
-import at.renehollander.advancedmanager.tilentity.redstonecontroller.TileEntityRedstoneController;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.event.world.BlockEvent;
 
 public class BlockNetworkCable extends BlockAdvancedManagerTileEntity implements INetworkBlock {
 
