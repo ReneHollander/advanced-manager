@@ -1,4 +1,6 @@
-package at.renehollander.advancedmanager.grid;
+package at.renehollander.advancedmanager.grid.exception;
+
+import at.renehollander.advancedmanager.grid.IMasterNode;
 
 /**
  * A MultipleMasterNodesException gets thrown if a {@link IMasterNode} or network that

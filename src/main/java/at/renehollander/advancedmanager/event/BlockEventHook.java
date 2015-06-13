@@ -1,7 +1,7 @@
 package at.renehollander.advancedmanager.event;
 
 import at.renehollander.advancedmanager.grid.INetworkBlock;
-import at.renehollander.advancedmanager.grid.MultipleMasterNodesException;
+import at.renehollander.advancedmanager.grid.exception.MultipleMasterNodesException;
 import at.renehollander.advancedmanager.grid.impl.TileEntityNode;
 import at.renehollander.advancedmanager.util.Log;
 import net.minecraft.client.Minecraft;

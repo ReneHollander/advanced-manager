@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -34,7 +35,7 @@ dependencies {
     compile 'com.fifesoft:rsyntaxtextarea:2.5.6'
     compile 'com.fifesoft:languagesupport:2.5.6'
     compile 'com.fifesoft:autocomplete:2.5.4'
-    compile 'org.python:jython:2.7-b3'
+
     compile 'org.jgrapht:jgrapht-core:0.9.1'
     compile 'org.jgrapht:jgrapht-ext:0.9.1'
     compile 'com.github.monkeysintown:jgraphx:3.1.2.1'
