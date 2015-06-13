@@ -2,6 +2,7 @@ package at.renehollander.advancedmanager;
 
 import at.renehollander.advancedmanager.event.BlockEventHook;
 import at.renehollander.advancedmanager.init.ModBlocks;
+import at.renehollander.advancedmanager.init.ModTileEntities;
 import at.renehollander.advancedmanager.network.DescriptionHandler;
 import at.renehollander.advancedmanager.network.NetworkHandler;
 import at.renehollander.advancedmanager.proxy.CommonProxy;
@@ -24,11 +25,12 @@ public class AdvancedManager {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new BlockEventHook());
         ModBlocks.init();
+        ModTileEntities.init();
         proxy.preInit();
         NetworkHandler.init();
         DescriptionHandler.init();
+        MinecraftForge.EVENT_BUS.register(new BlockEventHook());
         Log.info("Pre Initialization Complete!");
     }
 

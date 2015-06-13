@@ -17,14 +17,4 @@ public class BlockNetworkController extends BlockAdvancedManagerTileEntity imple
         super(Material.wood, "networkcontroller", TileEntityNetworkController.class);
     }
 
-    @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getStateFromMeta(meta);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityNetworkController();
-    }
-
 }

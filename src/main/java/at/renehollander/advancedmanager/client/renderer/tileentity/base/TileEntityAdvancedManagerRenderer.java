@@ -7,6 +7,14 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
+/**
+ * Abstract {@link TileEntitySpecialRenderer} class that takes common code and simplifies it,
+ *
+ * @param <T> Type of the {@link TileEntityAdvancedManager} that gets rendered
+ * @author Rene Hollander
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public abstract class TileEntityAdvancedManagerRenderer<T extends TileEntityAdvancedManager> extends TileEntitySpecialRenderer {
 
     @Override
@@ -24,6 +32,16 @@ public abstract class TileEntityAdvancedManagerRenderer<T extends TileEntityAdva
         }
     }
 
+    /**
+     * Render the given {@link TileEntityAdvancedManager} at the given position.
+     *
+     * @param te                  {@link TileEntityAdvancedManager} to get rendered
+     * @param x                   x coordinate of the tileentity
+     * @param y                   y coordinate of the tileentity
+     * @param z                   z coordinate of the tileentity
+     * @param partialTicks        partialTicks coordinate of the tileentity
+     * @param blockDamageProgress blockDamageProgress coordinate of the tileentity
+     */
     public abstract void render(T te, double x, double y, double z, float partialTicks, int blockDamageProgress);
 
 }

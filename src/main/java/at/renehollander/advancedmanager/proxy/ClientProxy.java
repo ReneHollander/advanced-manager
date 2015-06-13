@@ -1,11 +1,8 @@
 package at.renehollander.advancedmanager.proxy;
 
 import at.renehollander.advancedmanager.Reference;
-import at.renehollander.advancedmanager.block.base.IBlockAdvancedManager;
-import at.renehollander.advancedmanager.client.renderer.tileentity.TileEntityRedstoneScreenRenderer;
 import at.renehollander.advancedmanager.init.ModBlocks;
-import at.renehollander.advancedmanager.tilentity.TileEntityRedstoneScreen;
-import net.minecraft.block.Block;
+import at.renehollander.advancedmanager.init.ModTileEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,18 +18,17 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void init() {
         // Blocks
-        registerItemRenderer(ModBlocks.redstonecontroller);
-        registerItemRenderer(ModBlocks.redstonescreen);
-        registerItemRenderer(ModBlocks.networkcable);
-        registerItemRenderer(ModBlocks.networkcontroller);
+        ModBlocks.blocks.forEach((block) -> {
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Reference.MODID + ":" + block.getName(), "inventory"));
+        });
 
         // TileEntitySpecialRenderers
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRedstoneScreen.class, new TileEntityRedstoneScreenRenderer());
-    }
-
-    private void registerItemRenderer(Block block) {
-        IBlockAdvancedManager awesomeModBlock = (IBlockAdvancedManager) block;
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Reference.MODID + ":" + awesomeModBlock.getName(), "inventory"));
+        ModTileEntities.tileentities.forEach((block) -> {
+            Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Reference.MODID + ":" + block.getName(), "inventory"));
+            if (block.hasTileEntitySpecialRenderer()) {
+                ClientRegistry.bindTileEntitySpecialRenderer(block.getTileEntityClass(), block.getTileEntitySpecialRenderer());
+            }
+        });
     }
 
     @Override

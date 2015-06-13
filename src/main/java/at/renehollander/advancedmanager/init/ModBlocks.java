@@ -1,22 +1,19 @@
 package at.renehollander.advancedmanager.init;
 
-import at.renehollander.advancedmanager.block.BlockNetworkCable;
-import at.renehollander.advancedmanager.block.BlockNetworkController;
-import at.renehollander.advancedmanager.block.BlockRedstoneController;
-import at.renehollander.advancedmanager.block.BlockRedstoneScreen;
-import net.minecraft.block.Block;
+import at.renehollander.advancedmanager.block.base.BlockAdvancedManager;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ModBlocks {
 
-    public static Block redstonecontroller;
-    public static Block redstonescreen;
-    public static Block networkcable;
-    public static Block networkcontroller;
+    public static Set<BlockAdvancedManager> blocks;
 
     public static void init() {
-        redstonecontroller = new BlockRedstoneController();
-        redstonescreen = new BlockRedstoneScreen();
-        networkcable = new BlockNetworkCable();
-        networkcontroller = new BlockNetworkController();
+        blocks = new HashSet<>();
+    }
+
+    private static void registerBlock(BlockAdvancedManager block) {
+        blocks.add(block);
     }
 }

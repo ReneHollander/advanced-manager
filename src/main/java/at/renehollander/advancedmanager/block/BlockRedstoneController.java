@@ -19,11 +19,6 @@ public class BlockRedstoneController extends BlockAdvancedManagerTileEntity {
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityRedstoneController();
-    }
-
-    @Override
     public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side) {
         TileEntityRedstoneController te = (TileEntityRedstoneController) worldIn.getTileEntity(pos);
         return te.getProps().getPowerLevel(side);

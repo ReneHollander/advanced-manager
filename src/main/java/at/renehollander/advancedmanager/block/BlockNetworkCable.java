@@ -17,14 +17,4 @@ public class BlockNetworkCable extends BlockAdvancedManagerTileEntity implements
         super(Material.wood, "networkcable", TileEntityNetworkCable.class);
     }
 
-    @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return this.getStateFromMeta(meta);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileEntityNetworkCable();
-    }
-
 }
