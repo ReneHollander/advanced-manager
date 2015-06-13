@@ -41,6 +41,12 @@ dependencies {
     compile 'de.ruedigermoeller:fst:2.29'
 }
 
+sourceSets {
+    main {
+        output.resourcesDir = output.classesDir
+    }
+}
+
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
@@ -64,3 +70,4 @@ task createJavadoc(type: Javadoc) {
     source = sourceSets.main.allJava
     classpath = configurations.compile
 }
+
