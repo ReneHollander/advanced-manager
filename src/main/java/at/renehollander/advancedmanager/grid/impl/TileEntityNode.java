@@ -1,6 +1,7 @@
 package at.renehollander.advancedmanager.grid.impl;
 
 import at.renehollander.advancedmanager.grid.IGrid;
+import at.renehollander.advancedmanager.grid.IMasterNode;
 import at.renehollander.advancedmanager.grid.INetworkBlock;
 import at.renehollander.advancedmanager.grid.INode;
 import at.renehollander.advancedmanager.grid.graph.SidedEdge;
@@ -45,23 +46,34 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
             if (masterlessGrids.size() < 1) {
                 // and no masterless
                 // create a new grid and asign it to the node and add itself to the graph
-                this.setConnectedGrid(new MasterlessTileEntityGrid());
+                // if the new node is a master node create a new masterful network
+                if (this instanceof IMasterNode) {
+                    this.setConnectedGrid(new MasterfulTileEntityGrid(this));
+                } else {
+                    this.setConnectedGrid(new MasterlessTileEntityGrid());
+                }
                 this.getConnectedGrid().getGraph().addVertex(this);
             } else if (masterlessGrids.size() > 0) {
-                // and at least 1 masterless
-                // select a masterless grid to which all nodes are added
-                // select first grid
-                Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> newgrid = masterlessGrids.stream().findFirst().get();
-                // select all remaining grids
-                Set<Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>>> gridstomerge = masterlessGrids.stream().filter((grid) -> grid != newgrid).collect(Collectors.toSet());
-                // add itself to new grid
-                addSelfToGrid(newgrid);
-                // merge remaining grids into new grid
-                merge(newgrid, gridstomerge);
+                if (this instanceof IMasterNode) {
+                    this.setConnectedGrid(new MasterfulTileEntityGrid(this));
+                    this.getConnectedGrid().getGraph().addVertex(this);
+                    merge(this, this.getConnectedGrid(), masterlessGrids);
+                } else {
+                    // and at least 1 masterless
+                    // select a masterless grid to which all nodes are added
+                    // select first grid
+                    Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> newgrid = masterlessGrids.stream().findFirst().get();
+                    // select all remaining grids
+                    Set<Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>>> gridstomerge = masterlessGrids.stream().filter((grid) -> grid != newgrid).collect(Collectors.toSet());
+                    // add itself to new grid
+                    addSelfToGrid(newgrid);
+                    // merge remaining grids into new grid
+                    merge(newgrid, gridstomerge);
+                }
             }
-        } else if (masterfulGrids.size() == 1) {
-            // if there is one masterful grid
-            Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> grid = masterlessGrids.stream().findFirst().get();
+        } else if (masterfulGrids.size() == 1 && !(this instanceof IMasterNode)) {
+            // if there is one masterful grid and i am not a master node
+            Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> grid = masterfulGrids.stream().findFirst().get();
             if (masterlessGrids.size() == 0) {
                 // and no masterless grids
                 // add itself to grid
@@ -105,6 +117,38 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
     }
 
     /**
+     * Merge the specified oldgrids into newgrid
+     *
+     * @param newgrid  Grid to merge into
+     * @param oldgrids Grids to merge into newgrid
+     */
+    private void merge(TileEntityNode newMaster, IGrid<TileEntityNode> newgrid, Set<Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>>> oldgrids) {
+        for (Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> masterless : oldgrids) {
+            merge(newMaster, newgrid, masterless);
+        }
+    }
+
+    /**
+     * Merge a grid into another
+     *
+     * @param newgrid Grid to merge to
+     * @param oldgrid Grid to merge into newgrid
+     */
+    private void merge(TileEntityNode newMaster, IGrid<TileEntityNode> newgrid, Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> oldgrid) {
+        if (newgrid != oldgrid.getRight()) {
+            for (TileEntityNode vertex : oldgrid.getRight().getGraph().vertexSet()) {
+                newgrid.getGraph().addVertex(vertex);
+                vertex.setConnectedGrid(newgrid);
+            }
+            for (SidedEdge<TileEntityNode> edge : oldgrid.getRight().getGraph().edgeSet()) {
+                newgrid.getGraph().addEdge(edge.getV1(), edge.getV2(), edge);
+            }
+            ((TileEntityGrid) oldgrid.getRight()).vis.close();
+        }
+        newgrid.getGraph().addEdge(this, oldgrid.getMiddle(), new SidedEdge<>(this, oldgrid.getMiddle(), oldgrid.getLeft().getOpposite(), oldgrid.getLeft()));
+    }
+
+    /**
      * Merge a grid into another
      *
      * @param newgrid Grid to merge to
@@ -119,10 +163,9 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
             for (SidedEdge<TileEntityNode> edge : oldgrid.getRight().getGraph().edgeSet()) {
                 newgrid.getRight().getGraph().addEdge(edge.getV1(), edge.getV2(), edge);
             }
-            // TODO figure out
             ((TileEntityGrid) oldgrid.getRight()).vis.close();
         }
-        newgrid.getRight().getGraph().addEdge(this, oldgrid.getMiddle(), new SidedEdge<>(this, newgrid.getMiddle(), newgrid.getLeft().getOpposite(), oldgrid.getLeft()));
+        newgrid.getRight().getGraph().addEdge(this, oldgrid.getMiddle(), new SidedEdge<>(this, newgrid.getMiddle(), newgrid.getLeft(), oldgrid.getLeft()));
     }
 
     /**

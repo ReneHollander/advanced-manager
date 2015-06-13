@@ -38,4 +38,9 @@ public class MasterlessTileEntityGrid extends TileEntityGrid {
             this.vis.update();
         }
     }
+
+    @Override
+    public String toString() {
+        return "MasterlessTileEntityGrid[size: " + this.getGraph().vertexSet().size() + "]";
+    }
 }

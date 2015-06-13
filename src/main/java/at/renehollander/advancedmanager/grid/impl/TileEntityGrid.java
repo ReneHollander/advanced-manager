@@ -18,13 +18,13 @@ public abstract class TileEntityGrid implements IGrid<TileEntityNode> {
 
     private SimpleGraph<TileEntityNode, SidedEdge<TileEntityNode>> graph;
 
-    public Visualization<TileEntityNode, SidedEdge<TileEntityNode>> vis;
+    public Visualization<TileEntityNode> vis;
 
     public TileEntityGrid() {
         this.graph = new SimpleGraph<>((sourceVertex, targetVertex) -> {
             throw new IllegalAccessError("please specify the edge yourself!");
         });
-        this.vis = new Visualization<>(this.getGraph());
+        this.vis = new Visualization<>(this);
     }
 
     @Override

@@ -22,7 +22,8 @@ public class BlockEventHook {
         if (event.state.getBlock() instanceof INetworkBlock) {
             TileEntityNode node = (TileEntityNode) event.world.getTileEntity(event.pos);
             node.destroy();
-            System.out.println("Grid Size: " + node.getConnectedGrid().getGraph().vertexSet().size());
+            if (node.getConnectedGrid() != null)
+                System.out.println("Grid Size: " + node.getConnectedGrid().getGraph().vertexSet().size());
         }
     }
 
