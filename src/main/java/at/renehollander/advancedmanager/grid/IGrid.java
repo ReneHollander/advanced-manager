@@ -1,6 +1,6 @@
 package at.renehollander.advancedmanager.grid;
 
-import at.renehollander.advancedmanager.grid.graph.SidedEdge;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
 /**
@@ -17,7 +17,7 @@ public interface IGrid<NT extends INode> {
      *
      * @return Graph representing node layout
      */
-    public SimpleGraph<NT, SidedEdge<NT>> getGraph();
+    public SimpleGraph<NT, DefaultEdge> getGraph();
 
     /**
      * Remove the node from the grid. If the grid splits into subnets, create new grids from those subnets.

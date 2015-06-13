@@ -1,16 +1,13 @@
 package at.renehollander.advancedmanager.grid.impl;
 
-import at.renehollander.advancedmanager.grid.IGrid;
-import at.renehollander.advancedmanager.grid.IMasterNode;
-import at.renehollander.advancedmanager.grid.INetworkBlock;
-import at.renehollander.advancedmanager.grid.INode;
-import at.renehollander.advancedmanager.grid.graph.SidedEdge;
+import at.renehollander.advancedmanager.grid.*;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
 import at.renehollander.advancedmanager.util.Pair;
 import at.renehollander.advancedmanager.util.Trio;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import org.jgrapht.graph.DefaultEdge;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -71,7 +68,10 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
                     merge(newgrid, gridstomerge);
                 }
             }
-        } else if (masterfulGrids.size() == 1 && !(this instanceof IMasterNode)) {
+        } else if (masterfulGrids.size() == 1) {
+            if (this instanceof IMasterNode) {
+                throw new MultipleMasterNodesException("You cant connect to masterful networks together");
+            }
             // if there is one masterful grid and i am not a master node
             Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> grid = masterfulGrids.stream().findFirst().get();
             if (masterlessGrids.size() == 0) {
@@ -88,7 +88,7 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
         } else if (masterfulGrids.size() > 1) {
             // if there is more than 1 masterful grid
             // throw exception because two masterful grids cant be connected together
-            throw new RuntimeException("You cant connect to masterful networks together");
+            throw new MultipleMasterNodesException("You cant connect to masterful networks together");
         }
         ((TileEntityGrid) this.getConnectedGrid()).vis.update();
     }
@@ -101,7 +101,7 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
     private void addSelfToGrid(Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> grid) {
         this.setConnectedGrid(grid.getRight());
         this.getConnectedGrid().getGraph().addVertex(this);
-        this.getConnectedGrid().getGraph().addEdge(this, grid.getMiddle(), new SidedEdge<>(this, grid.getMiddle(), grid.getLeft(), grid.getLeft().getOpposite()));
+        this.getConnectedGrid().getGraph().addEdge(this, grid.getMiddle());
     }
 
     /**
@@ -140,12 +140,12 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
                 newgrid.getGraph().addVertex(vertex);
                 vertex.setConnectedGrid(newgrid);
             }
-            for (SidedEdge<TileEntityNode> edge : oldgrid.getRight().getGraph().edgeSet()) {
-                newgrid.getGraph().addEdge(edge.getV1(), edge.getV2(), edge);
+            for (DefaultEdge edge : oldgrid.getRight().getGraph().edgeSet()) {
+                newgrid.getGraph().addEdge(oldgrid.getRight().getGraph().getEdgeSource(edge), oldgrid.getRight().getGraph().getEdgeTarget(edge));
             }
             ((TileEntityGrid) oldgrid.getRight()).vis.close();
         }
-        newgrid.getGraph().addEdge(this, oldgrid.getMiddle(), new SidedEdge<>(this, oldgrid.getMiddle(), oldgrid.getLeft().getOpposite(), oldgrid.getLeft()));
+        newgrid.getGraph().addEdge(this, oldgrid.getMiddle());
     }
 
     /**
@@ -160,12 +160,12 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
                 newgrid.getRight().getGraph().addVertex(vertex);
                 vertex.setConnectedGrid(newgrid.getRight());
             }
-            for (SidedEdge<TileEntityNode> edge : oldgrid.getRight().getGraph().edgeSet()) {
-                newgrid.getRight().getGraph().addEdge(edge.getV1(), edge.getV2(), edge);
+            for (DefaultEdge edge : oldgrid.getRight().getGraph().edgeSet()) {
+                newgrid.getRight().getGraph().addEdge(oldgrid.getRight().getGraph().getEdgeSource(edge), oldgrid.getRight().getGraph().getEdgeTarget(edge));
             }
             ((TileEntityGrid) oldgrid.getRight()).vis.close();
         }
-        newgrid.getRight().getGraph().addEdge(this, oldgrid.getMiddle(), new SidedEdge<>(this, newgrid.getMiddle(), newgrid.getLeft(), oldgrid.getLeft()));
+        newgrid.getRight().getGraph().addEdge(this, oldgrid.getMiddle());
     }
 
     /**

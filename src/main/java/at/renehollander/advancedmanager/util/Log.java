@@ -5,8 +5,13 @@ import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 public class Log {
+
+    private static final Level level = Level.ALL;
+
     public static void log(Level logLevel, Object object) {
-        FMLLog.log(Reference.MOD_NAME, logLevel, String.valueOf(object));
+        if (logLevel.isAtLeastAsSpecificAs(level)) {
+            FMLLog.log(Reference.MOD_NAME, Level.INFO, String.valueOf(object));
+        }
     }
 
     public static void all(Object object) {
@@ -44,6 +49,5 @@ public class Log {
     public static void warn(Object object) {
         log(Level.WARN, object);
     }
-
 
 }
