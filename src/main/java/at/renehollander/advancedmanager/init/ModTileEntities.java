@@ -28,7 +28,7 @@ public class ModTileEntities {
     }
 
     private static void registerBlock(BlockAdvancedManagerTileEntity block) {
-        tileentities.add((BlockAdvancedManagerTileEntity) block);
+        tileentities.add(block);
     }
 
 }

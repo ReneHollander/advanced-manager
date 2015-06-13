@@ -4,8 +4,6 @@ import at.renehollander.advancedmanager.block.base.BlockAdvancedManagerTileEntit
 import at.renehollander.advancedmanager.client.renderer.tileentity.TileEntityRedstoneScreenRenderer;
 import at.renehollander.advancedmanager.tilentity.TileEntityRedstoneScreen;
 import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class BlockRedstoneScreen extends BlockAdvancedManagerTileEntity {
 

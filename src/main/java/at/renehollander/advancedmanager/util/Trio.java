@@ -18,8 +18,9 @@ public class Trio<L, M, R> {
     /**
      * Create a new Value Pair
      *
-     * @param left  Left value
-     * @param right Right value
+     * @param left   Left value
+     * @param middle Middle value
+     * @param right  Right value
      */
     public Trio(L left, M middle, R right) {
         this.left = left;

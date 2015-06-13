@@ -6,6 +6,7 @@ import org.jgrapht.graph.SimpleGraph;
 /**
  * Describes a TileEntityGrid/Network of {@link INode INodes} connected together.
  *
+ * @param <NT> Type of the stored nodes
  * @author Rene Hollander
  * @version 1.0.0
  * @since 1.0.0

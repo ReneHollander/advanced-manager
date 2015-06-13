@@ -3,6 +3,7 @@ package at.renehollander.advancedmanager.grid;
 /**
  * Represents a TileEntityNode in an {@link IGrid}
  *
+ * @param <NT> Type of the node
  * @author Rene Hollander
  * @version 1.0.0
  * @since 1.0.0

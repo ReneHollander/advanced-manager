@@ -21,7 +21,7 @@ public abstract class MessageBase<REQ extends IMessage> implements IMessage, IMe
     /**
      * Handle a packet on the client side. Note this occurs after decoding has completed.
      *
-     * @param message
+     * @param message message to handle
      * @param player  the player reference
      */
     public abstract void handleClientSide(REQ message, EntityPlayer player);
@@ -29,7 +29,7 @@ public abstract class MessageBase<REQ extends IMessage> implements IMessage, IMe
     /**
      * Handle a packet on the server side. Note this occurs after decoding has completed.
      *
-     * @param message
+     * @param message message to handle
      * @param player  the player reference
      */
     public abstract void handleServerSide(REQ message, EntityPlayer player);
