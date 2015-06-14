@@ -2,7 +2,7 @@ package at.renehollander.advancedmanager.client.renderer.tileentity;
 
 import at.renehollander.advancedmanager.client.renderer.tileentity.base.TileEntityAdvancedManagerRenderer;
 import at.renehollander.advancedmanager.client.util.FrameBufferObject;
-import at.renehollander.advancedmanager.tilentity.TileEntityRedstoneScreen;
+import at.renehollander.advancedmanager.tilentity.TileEntityAdvancedScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -12,12 +12,12 @@ import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class TileEntityRedstoneScreenRenderer extends TileEntityAdvancedManagerRenderer<TileEntityRedstoneScreen> {
+public class TileEntityAdvancedScreenRenderer extends TileEntityAdvancedManagerRenderer<TileEntityAdvancedScreen> {
 
     /*
     private BufferedImage bi;
     int textureID;
-    public TileEntityRedstoneScreenRenderer() {
+    public TileEntityAdvancedScreenRenderer() {
         int width = 64;
         int height = 64;
         ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_sRGB);
@@ -61,13 +61,13 @@ public class TileEntityRedstoneScreenRenderer extends TileEntityAdvancedManagerR
 
     private FrameBufferObject fbo;
 
-    public TileEntityRedstoneScreenRenderer() {
+    public TileEntityAdvancedScreenRenderer() {
         fbo = new FrameBufferObject(300, 300, true);
         fbo.initialize();
     }
 
     @Override
-    public void render(TileEntityRedstoneScreen te, double x, double y, double z, float partialTicks, int blockDamageProgress) {
+    public void render(TileEntityAdvancedScreen te, double x, double y, double z, float partialTicks, int blockDamageProgress) {
         GlStateManager.translate(x, y, z);
         //GlStateManager.disableLighting();
         Tessellator tessellator = Tessellator.getInstance();

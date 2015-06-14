@@ -1,5 +1,5 @@
 {
-  "parent": "advancedmanager:block/networkcable",
+  "parent": "advancedmanager:block/advancedcontroller",
   "display": {
     "thirdperson": {
       "rotation": [

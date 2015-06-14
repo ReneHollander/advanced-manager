@@ -7,5 +7,5 @@ package at.renehollander.advancedmanager.grid;
  * @version 1.0.0
  * @since 1.0.0
  */
-public interface INetworkBlock {
+public interface IGridBlock {
 }

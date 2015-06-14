@@ -11,8 +11,6 @@ public class NetworkHandler {
 
     public static void init() {
         INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
-
-        INSTANCE.registerMessage(MessageRedstoneControllerUpdateScript.class, MessageRedstoneControllerUpdateScript.class, 0, Side.SERVER);
     }
 
     public static void sendToServer(IMessage message) {

@@ -1,5 +1,5 @@
 {
-  "parent": "advancedmanager:block/redstonecontroller",
+  "parent": "advancedmanager:block/advancedcable",
   "display": {
     "thirdperson": {
       "rotation": [

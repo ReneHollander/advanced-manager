@@ -1,9 +1,8 @@
 package at.renehollander.advancedmanager.init;
 
-import at.renehollander.advancedmanager.block.BlockNetworkCable;
-import at.renehollander.advancedmanager.block.BlockNetworkController;
-import at.renehollander.advancedmanager.block.BlockRedstoneController;
-import at.renehollander.advancedmanager.block.BlockRedstoneScreen;
+import at.renehollander.advancedmanager.block.BlockAdvancedCable;
+import at.renehollander.advancedmanager.block.BlockAdvancedController;
+import at.renehollander.advancedmanager.block.BlockAdvancedScreen;
 import at.renehollander.advancedmanager.block.base.BlockAdvancedManagerTileEntity;
 
 import java.util.HashSet;
@@ -13,18 +12,16 @@ public class ModTileEntities {
 
     public static Set<BlockAdvancedManagerTileEntity> tileentities;
 
-    public static BlockAdvancedManagerTileEntity redstonecontroller;
-    public static BlockAdvancedManagerTileEntity redstonescreen;
-    public static BlockAdvancedManagerTileEntity networkcable;
-    public static BlockAdvancedManagerTileEntity networkcontroller;
+    public static BlockAdvancedManagerTileEntity advancedcable;
+    public static BlockAdvancedManagerTileEntity advancedcontroller;
+    public static BlockAdvancedManagerTileEntity advancedscreen;
 
     public static void init() {
         tileentities = new HashSet<>();
 
-        registerBlock(redstonecontroller = new BlockRedstoneController());
-        registerBlock(redstonescreen = new BlockRedstoneScreen());
-        registerBlock(networkcable = new BlockNetworkCable());
-        registerBlock(networkcontroller = new BlockNetworkController());
+        registerBlock(advancedcable = new BlockAdvancedCable());
+        registerBlock(advancedcontroller = new BlockAdvancedController());
+        registerBlock(advancedscreen = new BlockAdvancedScreen());
     }
 
     private static void registerBlock(BlockAdvancedManagerTileEntity block) {

@@ -1,6 +1,6 @@
 package at.renehollander.advancedmanager.event;
 
-import at.renehollander.advancedmanager.grid.INetworkBlock;
+import at.renehollander.advancedmanager.grid.IGridBlock;
 import at.renehollander.advancedmanager.grid.exception.MultipleMasterNodesException;
 import at.renehollander.advancedmanager.grid.impl.TileEntityNode;
 import at.renehollander.advancedmanager.util.Log;
@@ -15,7 +15,7 @@ public class BlockEventHook {
 
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = false)
     public void onEvent(BlockEvent.PlaceEvent event) {
-        if (event.placedBlock.getBlock() instanceof INetworkBlock) {
+        if (event.placedBlock.getBlock() instanceof IGridBlock) {
             TileEntityNode node = (TileEntityNode) event.blockSnapshot.getWorld().getTileEntity(event.blockSnapshot.pos);
             try {
                 node.discover();
@@ -31,7 +31,7 @@ public class BlockEventHook {
 
     @SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = false)
     public void onEvent(BlockEvent.BreakEvent event) {
-        if (event.state.getBlock() instanceof INetworkBlock) {
+        if (event.state.getBlock() instanceof IGridBlock) {
             TileEntityNode node = (TileEntityNode) event.world.getTileEntity(event.pos);
             try {
                 node.destroy();

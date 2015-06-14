@@ -2,7 +2,7 @@ package at.renehollander.advancedmanager.grid.impl;
 
 import at.renehollander.advancedmanager.grid.IGrid;
 import at.renehollander.advancedmanager.grid.IMasterNode;
-import at.renehollander.advancedmanager.grid.INetworkBlock;
+import at.renehollander.advancedmanager.grid.IGridBlock;
 import at.renehollander.advancedmanager.grid.INode;
 import at.renehollander.advancedmanager.grid.exception.MultipleMasterNodesException;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
@@ -18,7 +18,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class TileEntityNode extends TileEntityAdvancedManager implements INode<TileEntityNode> {
+public class TileEntityNode extends TileEntityAdvancedManager implements INode<TileEntityNode> {
 
     private IGrid<TileEntityNode> grid;
 
@@ -97,6 +97,13 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
         ((TileEntityGrid) this.getConnectedGrid()).vis.update();
     }
 
+    @Override
+    public void destroy() {
+        if (this.getConnectedGrid() != null) {
+            this.getConnectedGrid().removeNode(this);
+        }
+    }
+
     /**
      * Add itself to the specified grid
      *
@@ -173,7 +180,7 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
     }
 
     /**
-     * Probe nearby blocks in the world. If the block is an {@link INetworkBlock}
+     * Probe nearby blocks in the world. If the block is an {@link IGridBlock}
      * it will get added to the return set,
      *
      * @return Set of all found nodes
@@ -183,7 +190,7 @@ public abstract class TileEntityNode extends TileEntityAdvancedManager implement
         for (EnumFacing side : EnumFacing.values()) {
             BlockPos neighbourPos = this.getPos().add(side.getDirectionVec());
             IBlockState neighbourState = this.getWorld().getBlockState(neighbourPos);
-            if (neighbourState.getBlock() instanceof INetworkBlock) {
+            if (neighbourState.getBlock() instanceof IGridBlock) {
                 TileEntityNode nextNode = (TileEntityNode) this.getWorld().getTileEntity(neighbourPos);
                 foundNodes.add(new Pair<>(side, nextNode));
             }
