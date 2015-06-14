@@ -13,6 +13,7 @@ public abstract class ScriptingRegistry {
 
     private static final String SCRIPTRUNTIME_RUNTIMEINFOFIELD = "runtimeInfo";
     private static final String SCRIPTRUNTIME_APILISTFIELD = "apis";
+    private static final String SCRIPTRUNTIME_CLASSWHITELISTFIELD = "classWhitelist";
 
     private static final String API_APIINFOFIELD = "apiInfo";
 
@@ -45,10 +46,10 @@ public abstract class ScriptingRegistry {
         try {
             API apiObj = api.getRight().newInstance();
             Map<String, Field> fields = ReflectionUtil.getAllFields(new HashMap<>(), api.getRight());
-            inject(api.getRight(), fields, API_APIINFOFIELD, apiObj, api.getLeft(), true);
+            inject(api.getRight(), fields, API_APIINFOFIELD, apiObj, api.getLeft(), false);
             if (toInject != null) {
                 for (Map.Entry<String, Object> entry : toInject.entrySet()) {
-                    inject(api.getRight(), fields, entry.getKey(), apiObj, entry.getValue(), false);
+                    inject(api.getRight(), fields, entry.getKey(), apiObj, entry.getValue(), true);
                 }
             }
             return apiObj;
@@ -66,15 +67,16 @@ public abstract class ScriptingRegistry {
         return apis;
     }
 
-    public ScriptRuntime newRuntime(String shortName, Map<String, Object> toInject) throws ScriptRuntimeError {
+    public ScriptRuntime newRuntime(String shortName, Set<String> classWhitelist, Map<String, Object> toInject) throws ScriptRuntimeError {
         Pair<ScriptRuntimeInfo, Class<? extends ScriptRuntime>> runtime = runtimes.get(shortName);
         if (runtime == null) return null;
         try {
             ScriptRuntime runtimeObj = runtime.getRight().newInstance();
             Map<String, Field> fields = ReflectionUtil.getAllFields(new HashMap<>(), runtime.getRight());
-            inject(runtime.getRight(), fields, SCRIPTRUNTIME_RUNTIMEINFOFIELD, runtimeObj, runtime.getLeft(), true);
-            inject(runtime.getRight(), fields, SCRIPTRUNTIME_APILISTFIELD, runtimeObj, createAllAPIs(toInject), true);
-            runtimeObj.bindAPIs();
+            inject(runtime.getRight(), fields, SCRIPTRUNTIME_RUNTIMEINFOFIELD, runtimeObj, runtime.getLeft(), false);
+            inject(runtime.getRight(), fields, SCRIPTRUNTIME_APILISTFIELD, runtimeObj, createAllAPIs(toInject), false);
+            inject(runtime.getRight(), fields, SCRIPTRUNTIME_CLASSWHITELISTFIELD, runtimeObj, classWhitelist, false);
+            runtimeObj.initialize();
             return runtimeObj;
         } catch (Exception e) {
             throw new ScriptRuntimeError(e);

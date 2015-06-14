@@ -22,12 +22,15 @@ public class JavascriptScriptRuntime extends ScriptRuntime {
     public JavascriptScriptRuntime() {
         pool = Executors.newCachedThreadPool();
         NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
-        se = factory.getScriptEngine();
+        se = factory.getScriptEngine(s -> {
+            System.out.println("Class " + s + " can be used: " + allowedClass(s));
+            return allowedClass(s);
+        });
         invocable = (Invocable) se;
     }
 
     @Override
-    public void bindAPIs() {
+    public void initialize() {
         for (API api : getApis()) {
             se.put(api.getApiInfo().getShortName(), api);
         }

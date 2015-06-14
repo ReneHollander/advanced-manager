@@ -6,11 +6,15 @@ import at.renehollander.advancedmanager.scripting.exception.ScriptError;
 import at.renehollander.advancedmanager.util.Callback;
 
 import java.util.List;
+import java.util.Set;
 
 public abstract class ScriptRuntime {
 
     @Inject
     private ScriptRuntimeInfo runtimeInfo;
+
+    @Inject
+    private Set<String> classWhitelist;
 
     @Inject
     private List<API> apis;
@@ -25,6 +29,15 @@ public abstract class ScriptRuntime {
     }
 
     /**
+     * Getter for property 'classWhitelist'.
+     *
+     * @return Value for property 'classWhitelist'.
+     */
+    public Set<String> getClassWhitelist() {
+        return classWhitelist;
+    }
+
+    /**
      * Getter for property 'apis'.
      *
      * @return Value for property 'apis'.
@@ -33,7 +46,13 @@ public abstract class ScriptRuntime {
         return apis;
     }
 
-    public abstract void bindAPIs();
+    public boolean allowedClass(String name) {
+        System.out.println(classWhitelist);
+        return this.getClassWhitelist() == null || this.getClassWhitelist().contains(name);
+
+    }
+
+    public abstract void initialize();
 
     public abstract void execute(String script, Callback<Boolean> cb) throws ScriptError;
 
