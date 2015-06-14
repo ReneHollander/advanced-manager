@@ -1,62 +1,42 @@
 package at.renehollander.advancedmanager.scripting.runtime;
 
+import at.renehollander.advancedmanager.scripting.annotation.Inject;
+import at.renehollander.advancedmanager.scripting.api.API;
 import at.renehollander.advancedmanager.scripting.exception.ScriptError;
 import at.renehollander.advancedmanager.util.Callback;
 
+import java.util.List;
+
 public abstract class ScriptRuntime {
 
-    private final String name;
-    private final String longName;
-    private final String description;
-    private final String documentation;
+    @Inject
+    private ScriptRuntimeInfo runtimeInfo;
 
-    public ScriptRuntime(String name, String longName, String description, String documentation) {
-        this.name = name;
-        this.longName = longName;
-        this.description = description;
-        this.documentation = documentation;
-    }
+    @Inject
+    private List<API> apis;
 
-    public ScriptRuntime(String name, String longName) {
-        this(name, longName, "", "");
+    /**
+     * Getter for property 'runtimeInfo'.
+     *
+     * @return Value for property 'runtimeInfo'.
+     */
+    public ScriptRuntimeInfo getRuntimeInfo() {
+        return runtimeInfo;
     }
 
     /**
-     * Getter for property 'name'.
+     * Getter for property 'apis'.
      *
-     * @return Value for property 'name'.
+     * @return Value for property 'apis'.
      */
-    public String getName() {
-        return name;
+    public List<API> getApis() {
+        return apis;
     }
 
-    /**
-     * Getter for property 'longName'.
-     *
-     * @return Value for property 'longName'.
-     */
-    public String getLongName() {
-        return longName;
-    }
-
-    /**
-     * Getter for property 'description'.
-     *
-     * @return Value for property 'description'.
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Getter for property 'documentation'.
-     *
-     * @return Value for property 'documentation'.
-     */
-    public String getDocumentation() {
-        return documentation;
-    }
+    public abstract void bindAPIs();
 
     public abstract void execute(String script, Callback<Boolean> cb) throws ScriptError;
+
+    public abstract void stopExecution();
 
 }

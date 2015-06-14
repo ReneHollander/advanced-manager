@@ -4,20 +4,22 @@ import at.renehollander.advancedmanager.scripting.api.API;
 import at.renehollander.advancedmanager.scripting.api.APIInfo;
 import at.renehollander.advancedmanager.scripting.exception.ScriptRuntimeError;
 import at.renehollander.advancedmanager.util.Pair;
+import at.renehollander.advancedmanager.util.ReflectionUtil;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
-public class ScriptRuntimeFactory {
+public abstract class ScriptingRegistry {
 
-    private static final ScriptRuntimeFactory INSTANCE = new ScriptRuntimeFactory();
+    private static final String SCRIPTRUNTIME_RUNTIMEINFOFIELD = "runtimeInfo";
+    private static final String SCRIPTRUNTIME_APILISTFIELD = "apis";
+
+    private static final String API_APIINFOFIELD = "apiInfo";
 
     private Map<String, Pair<APIInfo, Class<? extends API>>> apis;
     private Map<String, Pair<ScriptRuntimeInfo, Class<? extends ScriptRuntime>>> runtimes;
 
-    private ScriptRuntimeFactory() {
+    public ScriptingRegistry() {
         this.apis = new HashMap<>();
         this.runtimes = new HashMap<>();
     }
@@ -38,21 +40,58 @@ public class ScriptRuntimeFactory {
         this.runtimes.put(info.getShortName(), new Pair<>(info, scriptRuntimeClass));
     }
 
-    public API newAPI(String shortName) throws ScriptRuntimeError {
-        Pair<APIInfo, Class<? extends API>> api = apis.get(shortName);
+    public API newAPI(Pair<APIInfo, Class<? extends API>> api, Map<String, Object> toInject) throws ScriptRuntimeError {
         if (api == null) return null;
         try {
-            return api.getRight().newInstance();
+            API apiObj = api.getRight().newInstance();
+            Map<String, Field> fields = ReflectionUtil.getAllFields(new HashMap<>(), api.getRight());
+            inject(api.getRight(), fields, API_APIINFOFIELD, apiObj, api.getLeft(), true);
+            if (toInject != null) {
+                for (Map.Entry<String, Object> entry : toInject.entrySet()) {
+                    inject(api.getRight(), fields, entry.getKey(), apiObj, entry.getValue(), false);
+                }
+            }
+            return apiObj;
         } catch (Exception e) {
             throw new ScriptRuntimeError(e);
         }
     }
 
-    public ScriptRuntime newRuntime(String shortName) throws ScriptRuntimeError {
+    public List<API> createAllAPIs(Map<String, Object> toInject) throws ScriptRuntimeError {
+        List<API> apis = new ArrayList<>();
+        for (Pair<APIInfo, Class<? extends API>> api : getAPIs()) {
+            API apiObj = newAPI(api, toInject);
+            apis.add(apiObj);
+        }
+        return apis;
+    }
+
+    public ScriptRuntime newRuntime(String shortName, Map<String, Object> toInject) throws ScriptRuntimeError {
         Pair<ScriptRuntimeInfo, Class<? extends ScriptRuntime>> runtime = runtimes.get(shortName);
         if (runtime == null) return null;
         try {
-            return runtime.getRight().newInstance();
+            ScriptRuntime runtimeObj = runtime.getRight().newInstance();
+            Map<String, Field> fields = ReflectionUtil.getAllFields(new HashMap<>(), runtime.getRight());
+            inject(runtime.getRight(), fields, SCRIPTRUNTIME_RUNTIMEINFOFIELD, runtimeObj, runtime.getLeft(), true);
+            inject(runtime.getRight(), fields, SCRIPTRUNTIME_APILISTFIELD, runtimeObj, createAllAPIs(toInject), true);
+            runtimeObj.bindAPIs();
+            return runtimeObj;
+        } catch (Exception e) {
+            throw new ScriptRuntimeError(e);
+        }
+    }
+
+    private void inject(Class<?> clazz, Map<String, Field> fields, String fieldName, Object obj, Object val, boolean dontCareIfFieldNonExistent) throws ScriptRuntimeError {
+        try {
+            Field f = fields.get(fieldName);
+            if (!dontCareIfFieldNonExistent && f == null)
+                throw new NoSuchElementException("field " + fieldName + " non existent");
+            if (f != null) {
+                boolean accessible = f.isAccessible();
+                f.setAccessible(true);
+                f.set(obj, val);
+                f.setAccessible(accessible);
+            }
         } catch (Exception e) {
             throw new ScriptRuntimeError(e);
         }
@@ -76,10 +115,6 @@ public class ScriptRuntimeFactory {
         Pair<ScriptRuntimeInfo, Class<? extends ScriptRuntime>> runtime = runtimes.get(shortName);
         if (runtime == null) return null;
         return runtime.getLeft();
-    }
-
-    public static ScriptRuntimeFactory instance() {
-        return INSTANCE;
     }
 
 }
