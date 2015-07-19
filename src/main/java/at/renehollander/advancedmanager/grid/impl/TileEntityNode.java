@@ -1,8 +1,8 @@
 package at.renehollander.advancedmanager.grid.impl;
 
 import at.renehollander.advancedmanager.grid.IGrid;
-import at.renehollander.advancedmanager.grid.IMasterNode;
 import at.renehollander.advancedmanager.grid.IGridBlock;
+import at.renehollander.advancedmanager.grid.IMasterNode;
 import at.renehollander.advancedmanager.grid.INode;
 import at.renehollander.advancedmanager.grid.exception.MultipleMasterNodesException;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
@@ -74,7 +74,7 @@ public class TileEntityNode extends TileEntityAdvancedManager implements INode<T
             }
         } else if (masterfulGrids.size() == 1) {
             if (this instanceof IMasterNode) {
-                throw new MultipleMasterNodesException("You cant connect to masterful networks together");
+                throw new MultipleMasterNodesException("You can't connect multiple masterful networks together");
             }
             // if there is one masterful grid and i am not a master node
             Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>> grid = masterfulGrids.stream().findFirst().get();
@@ -90,9 +90,13 @@ public class TileEntityNode extends TileEntityAdvancedManager implements INode<T
                 merge(grid, masterlessGrids);
             }
         } else if (masterfulGrids.size() > 1) {
-            // if there is more than 1 masterful grid
-            // throw exception because two masterful grids cant be connected together
-            throw new MultipleMasterNodesException("You cant connect to masterful networks together");
+            if (this.areOnSameNetwork(foundNodes)) {
+                foundNodes.forEach((node) -> addSelfToGrid(new Trio<>(node.getLeft(), node.getRight(), node.getRight().getConnectedGrid())));
+            } else {
+                // if there is more than 1 masterful grid
+                // throw exception because two masterful grids cant be connected together
+                throw new MultipleMasterNodesException("You can't connect multiple masterful networks together");
+            }
         }
         ((TileEntityGrid) this.getConnectedGrid()).vis.update();
     }
@@ -205,7 +209,7 @@ public class TileEntityNode extends TileEntityAdvancedManager implements INode<T
      * @return Set of all found masterful grids
      */
     private Set<Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>>> getNearbyMasterfulGrids(Set<Pair<EnumFacing, TileEntityNode>> nodes) {
-        return getNearbyGridsByType(nodes, (pair) -> pair.getRight().getConnectedGrid() instanceof MasterfulTileEntityGrid);
+        return getNearbyGridsByType(nodes, (grid) -> grid instanceof MasterfulTileEntityGrid);
     }
 
     /**
@@ -215,7 +219,7 @@ public class TileEntityNode extends TileEntityAdvancedManager implements INode<T
      * @return Set of all found masterless grids
      */
     private Set<Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>>> getNearbyMasterlessGrids(Set<Pair<EnumFacing, TileEntityNode>> nodes) {
-        return getNearbyGridsByType(nodes, (pair) -> pair.getRight().getConnectedGrid() instanceof MasterlessTileEntityGrid);
+        return getNearbyGridsByType(nodes, (grid) -> grid instanceof MasterlessTileEntityGrid);
     }
 
     /**
@@ -225,8 +229,27 @@ public class TileEntityNode extends TileEntityAdvancedManager implements INode<T
      * @param byType If the test returns <tt>true</tt>, the node will be added to the return set
      * @return Set of all found grids
      */
-    private Set<Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>>> getNearbyGridsByType(Set<Pair<EnumFacing, TileEntityNode>> nodes, Predicate<Pair<EnumFacing, TileEntityNode>> byType) {
-        return nodes.stream().filter(byType).map((pair) -> new Trio<>(pair.getLeft(), pair.getRight(), pair.getRight().getConnectedGrid())).collect(Collectors.toSet());
+    private Set<Trio<EnumFacing, TileEntityNode, IGrid<TileEntityNode>>> getNearbyGridsByType(Set<Pair<EnumFacing, TileEntityNode>> nodes, Predicate<IGrid> byType) {
+        return nodes.stream().filter((pair) -> byType.test(pair.getRight().getConnectedGrid())).map((pair) -> new Trio<>(pair.getLeft(), pair.getRight(), pair.getRight().getConnectedGrid())).collect(Collectors.toSet());
+    }
+
+    /**
+     * Check if the supplied nodes are on the same network
+     *
+     * @param nodes Nodes to check if they are on the same network
+     * @return <t>true</t> if all nodes are on the same network, <f>false</f> if they are not
+     */
+    private boolean areOnSameNetwork(Set<Pair<EnumFacing, TileEntityNode>> nodes) {
+        IGrid grid = null;
+        for (Pair<EnumFacing, TileEntityNode> node : nodes) {
+            if (grid == null) {
+                grid = node.getRight().getConnectedGrid();
+            }
+            if (grid != node.getRight().getConnectedGrid()) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
