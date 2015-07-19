@@ -26,7 +26,7 @@ sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
 
 minecraft {
-    version = "1.8-11.14.3.1446"
+    version = "1.8-11.14.3.1450"
     mappings = "snapshot_20141130"
     runDir = "workingDir"
 }
@@ -71,4 +71,3 @@ task createJavadoc(type: Javadoc) {
     source = sourceSets.main.allJava
     classpath = configurations.compile
 }
-
