@@ -1,7 +1,19 @@
 package at.renehollander.advancedmanager.grid.event;
 
-/**
- * Created by rene on 7/20/15.
- */
 public class GridRegistry {
+
+    public void registerListener(Listener listener) {
+        // TODO implement listener logic
+    }
+
+    /* ---------- STATIC STUFF ---------- */
+    private static GridRegistry INSTANCE;
+
+    public static void init() {
+        INSTANCE = new GridRegistry();
+    }
+
+    public GridRegistry instance() {
+        return INSTANCE;
+    }
 }

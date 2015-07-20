@@ -3,10 +3,24 @@ package at.renehollander.advancedmanager.grid.event;
 import at.renehollander.advancedmanager.grid.IGrid;
 import at.renehollander.advancedmanager.grid.INode;
 
+/**
+ * An Event that has something to do with the supplied Grid and Node.
+ *
+ * @param <NT> Type of the node and nodes in the grid
+ * @author Rene Hollander
+ * @version 1.0.0
+ * @since 1.0.0
+ */
 public abstract class GridNodeEvent<NT extends INode> extends GridEvent<NT> {
 
     private INode<NT> node;
 
+    /**
+     * Creates a new GridNodeEvent with the given Grid and Node
+     *
+     * @param grid Grid
+     * @param node Node
+     */
     public GridNodeEvent(IGrid<NT> grid, INode<NT> node) {
         super(grid);
         this.node = node;
