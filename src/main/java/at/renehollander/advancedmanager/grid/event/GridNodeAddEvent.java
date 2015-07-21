@@ -1,8 +1,7 @@
-package at.renehollander.advancedmanager.grid.event.impl;
+package at.renehollander.advancedmanager.grid.event;
 
 import at.renehollander.advancedmanager.grid.IGrid;
 import at.renehollander.advancedmanager.grid.INode;
-import at.renehollander.advancedmanager.grid.event.GridNodeEvent;
 
 /**
  * This event gets called, if a new node gets added to the grid

@@ -2,7 +2,6 @@ package at.renehollander.advancedmanager.redstonecontroller.scripting.api;
 
 import at.renehollander.advancedmanager.scripting.api.APIInfo;
 
-import java.util.Arrays;
 import java.util.List;
 
 @APIInfo.Annotation(shortName = "console", name = "Console", description = "Log messages to console")

@@ -20,7 +20,7 @@ public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPack
         NetworkRegistry.INSTANCE.newChannel(CHANNEL, new DescriptionHandler());
     }
 
-    public static void init() {
+    public static void preInit() {
         //not actually doing anything here, apart from loading the class. If the channel registry goes in here, Netty will throw a duplicate
         //channel error.
     }

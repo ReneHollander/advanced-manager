@@ -2,6 +2,7 @@ package at.renehollander.advancedmanager.grid.event;
 
 import at.renehollander.advancedmanager.grid.IGrid;
 import at.renehollander.advancedmanager.grid.INode;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import org.apache.commons.lang3.Validate;
 
 /**

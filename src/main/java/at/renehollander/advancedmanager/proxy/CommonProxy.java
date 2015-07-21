@@ -1,14 +1,27 @@
 package at.renehollander.advancedmanager.proxy;
 
+import at.renehollander.advancedmanager.block.BlockHandler;
+import at.renehollander.advancedmanager.block.TileEntityHandler;
+import at.renehollander.advancedmanager.event.EventHandler;
+import at.renehollander.advancedmanager.network.DescriptionHandler;
+import at.renehollander.advancedmanager.network.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 
 public abstract class CommonProxy {
 
-    public abstract void preInit();
+    public void preInit() {
+        BlockHandler.preInit();
+        TileEntityHandler.preInit();
+        NetworkHandler.preInit();
+        DescriptionHandler.preInit();
+        EventHandler.preInit();
+    }
 
-    public abstract void init();
+    public void init() {
+    }
 
-    public abstract void postInit();
+    public void postInit() {
+    }
 
     public abstract EntityPlayer getClientPlayer();
 

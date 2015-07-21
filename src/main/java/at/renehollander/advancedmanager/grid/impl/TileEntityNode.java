@@ -4,6 +4,7 @@ import at.renehollander.advancedmanager.grid.IGrid;
 import at.renehollander.advancedmanager.grid.IGridBlock;
 import at.renehollander.advancedmanager.grid.IMasterNode;
 import at.renehollander.advancedmanager.grid.INode;
+import at.renehollander.advancedmanager.grid.event.GridNodeAddEvent;
 import at.renehollander.advancedmanager.grid.exception.MultipleMasterNodesException;
 import at.renehollander.advancedmanager.tilentity.base.TileEntityAdvancedManager;
 import at.renehollander.advancedmanager.util.Pair;
@@ -11,6 +12,7 @@ import at.renehollander.advancedmanager.util.Trio;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.MinecraftForge;
 import org.jgrapht.graph.DefaultEdge;
 
 import java.util.HashSet;
@@ -98,6 +100,7 @@ public class TileEntityNode extends TileEntityAdvancedManager implements INode<T
                 throw new MultipleMasterNodesException("You can't connect multiple masterful networks together");
             }
         }
+        MinecraftForge.EVENT_BUS.post(new GridNodeAddEvent<>(this.getConnectedGrid(), this));
         ((TileEntityGrid) this.getConnectedGrid()).vis.update();
     }
 
