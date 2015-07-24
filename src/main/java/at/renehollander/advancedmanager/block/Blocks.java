@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BlockHandler {
+public class Blocks {
 
     private static Set<BlockAdvancedManager> blocks;
 

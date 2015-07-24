@@ -1,6 +1,6 @@
 package at.renehollander.advancedmanager.creative;
 
-import at.renehollander.advancedmanager.block.TileEntityHandler;
+import at.renehollander.advancedmanager.block.TileEntities;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
@@ -14,6 +14,6 @@ public class AwesomeModCreativeTab extends CreativeTabs {
 
     @Override
     public Item getTabIconItem() {
-        return Item.getItemFromBlock(TileEntityHandler.advancedcontroller);
+        return Item.getItemFromBlock(TileEntities.advancedcontroller);
     }
 }

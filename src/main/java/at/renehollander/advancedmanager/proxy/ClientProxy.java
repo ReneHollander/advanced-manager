@@ -1,8 +1,8 @@
 package at.renehollander.advancedmanager.proxy;
 
 import at.renehollander.advancedmanager.Reference;
-import at.renehollander.advancedmanager.block.BlockHandler;
-import at.renehollander.advancedmanager.block.TileEntityHandler;
+import at.renehollander.advancedmanager.block.Blocks;
+import at.renehollander.advancedmanager.block.TileEntities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,12 +20,12 @@ public class ClientProxy extends CommonProxy {
     public void init() {
         super.init();
         // Blocks
-        BlockHandler.blocks().forEach((block) -> {
+        Blocks.blocks().forEach((block) -> {
             Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Reference.MODID + ":" + block.getName(), "inventory"));
         });
 
         // TileEntitySpecialRenderers
-        TileEntityHandler.tileEntities().forEach((block) -> {
+        TileEntities.tileEntities().forEach((block) -> {
             Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), 0, new ModelResourceLocation(Reference.MODID + ":" + block.getName(), "inventory"));
             if (block.hasTileEntitySpecialRenderer()) {
                 ClientRegistry.bindTileEntitySpecialRenderer(block.getTileEntityClass(), block.getTileEntitySpecialRenderer());

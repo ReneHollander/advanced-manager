@@ -33,6 +33,7 @@ public class MasterfulTileEntityGrid extends TileEntityGrid {
     @Override
     public void removeNode(TileEntityNode node) {
         this.getGraph().removeVertex(node);
+        node.setConnectedGrid(null);
         if (this.getGraph().vertexSet().size() <= 0) {
             vis.close();
         } else {
