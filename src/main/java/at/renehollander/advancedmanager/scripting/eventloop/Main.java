@@ -24,7 +24,7 @@ public class Main {
                 try {
 
                     SimpleBindings globalBindings = new SimpleBindings();
-                    //BaseModule timer = new Timer(se, eventLoop, globalBindings);
+                    //BaseModule timer = new TimerModule(se, eventLoop, globalBindings);
 
                     se.eval(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("test.js")), globalBindings);
 
