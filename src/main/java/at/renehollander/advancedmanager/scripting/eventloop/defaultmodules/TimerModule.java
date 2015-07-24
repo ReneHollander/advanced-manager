@@ -21,15 +21,17 @@ public class TimerModule extends BaseModule {
     }
 
     public void load() {
-        getEnviroment().getBindings().put("setTimeout", (Function.TwoArg.WithoutReturn<ScriptObjectMirror, Integer>) this::setTimeout);
-        getEnviroment().getBindings().put("setInterval", (Function.TwoArg.WithoutReturn<ScriptObjectMirror, Integer>) this::setInterval);
+        getEnviroment().getBindings().put("setTimeout", (Function.TwoArg.WithReturn<TimerTask, ScriptObjectMirror, Integer>) this::setTimeout);
+        getEnviroment().getBindings().put("clearTimeout", (Function.OneArg.WithoutReturn<TimerTask>) this::clearTimeout);
+        getEnviroment().getBindings().put("setInterval", (Function.TwoArg.WithReturn<TimerTask, ScriptObjectMirror, Integer>) this::setInterval);
+        getEnviroment().getBindings().put("clearInterval", (Function.OneArg.WithoutReturn<TimerTask>) this::clearInterval);
     }
 
     public Timer getTimer() {
         return timer;
     }
 
-    public void setTimeout(ScriptObjectMirror somCb, int duration) {
+    public TimerTask setTimeout(ScriptObjectMirror somCb, int duration) {
         Callback.Empty cb = somCb.to(Callback.Empty.class);
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -38,9 +40,14 @@ public class TimerModule extends BaseModule {
             }
         };
         getTimer().schedule(timerTask, duration);
+        return timerTask;
     }
 
-    public void setInterval(ScriptObjectMirror somCb, int duration) {
+    public void clearTimeout(TimerTask timerTask) {
+        timerTask.cancel();
+    }
+
+    public TimerTask setInterval(ScriptObjectMirror somCb, int duration) {
         Callback.Empty cb = somCb.to(Callback.Empty.class);
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -49,6 +56,11 @@ public class TimerModule extends BaseModule {
             }
         };
         getTimer().scheduleAtFixedRate(timerTask, 0, duration);
+        return timerTask;
+    }
+
+    public void clearInterval(TimerTask timerTask) {
+        timerTask.cancel();
     }
 
 }
