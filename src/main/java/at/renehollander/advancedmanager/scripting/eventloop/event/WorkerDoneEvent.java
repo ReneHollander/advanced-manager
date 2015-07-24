@@ -2,7 +2,7 @@ package at.renehollander.advancedmanager.scripting.eventloop.event;
 
 import at.renehollander.advancedmanager.scripting.eventloop.Worker;
 
-public class WorkerDoneEvent extends Event {
+public class WorkerDoneEvent implements Event {
 
     private Worker worker;
 
@@ -19,4 +19,9 @@ public class WorkerDoneEvent extends Event {
         return worker;
     }
 
+    @Override
+    public void handle() {
+        getWorker().getParent().getRunningTaskCounter().decrementAndGet();
+        getWorker().handleDone();
+    }
 }
