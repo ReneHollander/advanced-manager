@@ -45,6 +45,9 @@ dependencies {
 sourceSets {
     main {
         output.resourcesDir = output.classesDir
+        resources {
+            srcDirs 'src/main/javascript'
+        }
     }
 }
 
