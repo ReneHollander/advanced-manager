@@ -1,7 +1,5 @@
 package at.renehollander.advancedmanager.scripting.eventloop;
 
-import at.renehollander.advancedmanager.scripting.eventloop.defaultmodules.DefaultModule;
-import at.renehollander.advancedmanager.scripting.eventloop.defaultmodules.Timer;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
@@ -26,7 +24,7 @@ public class Main {
                 try {
 
                     SimpleBindings globalBindings = new SimpleBindings();
-                    DefaultModule timer = new Timer(se, eventLoop, globalBindings);
+                    //BaseModule timer = new Timer(se, eventLoop, globalBindings);
 
                     se.eval(new InputStreamReader(Thread.currentThread().getContextClassLoader().getResourceAsStream("test.js")), globalBindings);
 

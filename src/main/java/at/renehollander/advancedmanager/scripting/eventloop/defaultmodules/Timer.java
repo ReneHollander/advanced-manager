@@ -1,22 +1,22 @@
 package at.renehollander.advancedmanager.scripting.eventloop.defaultmodules;
 
-import at.renehollander.advancedmanager.scripting.eventloop.Callback;
-import at.renehollander.advancedmanager.scripting.eventloop.EventLoop;
-import at.renehollander.advancedmanager.scripting.eventloop.Functions;
+import at.renehollander.advancedmanager.scripting.eventloop.util.Callback;
+import at.renehollander.advancedmanager.scripting.eventloop.util.Functions;
+import at.renehollander.advancedmanager.scripting.eventloop.ScriptEnviroment;
 import at.renehollander.advancedmanager.scripting.eventloop.Worker;
 import at.renehollander.advancedmanager.scripting.eventloop.event.UniversalEvent;
-import jdk.nashorn.api.scripting.NashornScriptEngine;
+import at.renehollander.advancedmanager.scripting.eventloop.module.BaseModule;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
-import javax.script.Bindings;
+public class Timer extends BaseModule {
 
-public class Timer extends DefaultModule {
+    public Timer(ScriptEnviroment enviroment) {
+        super(enviroment);
+    }
 
-    public Timer(NashornScriptEngine engine, EventLoop eventLoop, Bindings bindings) {
-        super(engine, eventLoop, bindings);
-
-        getBindings().put("setTimeout", (Functions.Function2ArgNoReturn<ScriptObjectMirror, Integer>) this::setTimeout);
-        getBindings().put("setInterval", (Functions.Function2ArgNoReturn<ScriptObjectMirror, Integer>) this::setInterval);
+    public void load() {
+        getEnviroment().getBindings().put("setTimeout", (Functions.Function2ArgNoReturn<ScriptObjectMirror, Integer>) this::setTimeout);
+        getEnviroment().getBindings().put("setInterval", (Functions.Function2ArgNoReturn<ScriptObjectMirror, Integer>) this::setInterval);
     }
 
     public void setTimeout(ScriptObjectMirror somCb, int duration) {
@@ -37,7 +37,7 @@ public class Timer extends DefaultModule {
                 }
             }
         };
-        getEventLoop().postWorker(w);
+        getEnviroment().getEventLoop().postWorker(w);
     }
 
     public void setInterval(ScriptObjectMirror somCb, int duration) {
@@ -59,7 +59,7 @@ public class Timer extends DefaultModule {
                 }
             }
         };
-        getEventLoop().postWorker(w);
+        getEnviroment().getEventLoop().postWorker(w);
     }
 
 }

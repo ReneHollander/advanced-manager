@@ -1,5 +1,7 @@
 package at.renehollander.advancedmanager.scripting.eventloop;
 
+import at.renehollander.advancedmanager.scripting.eventloop.util.Callback;
+
 public abstract class Worker<T extends Callback> implements Runnable {
 
     private EventLoop parent;

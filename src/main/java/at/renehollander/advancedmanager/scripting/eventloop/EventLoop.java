@@ -5,6 +5,7 @@ import at.renehollander.advancedmanager.scripting.eventloop.event.UniversalEvent
 import at.renehollander.advancedmanager.scripting.eventloop.event.WorkerDoneEvent;
 import at.renehollander.advancedmanager.scripting.eventloop.event.WorkerNewEvent;
 import at.renehollander.advancedmanager.scripting.eventloop.util.BetterBlockingQueue;
+import at.renehollander.advancedmanager.scripting.eventloop.util.SharedThreads;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;

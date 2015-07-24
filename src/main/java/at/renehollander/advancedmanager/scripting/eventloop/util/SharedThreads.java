@@ -1,4 +1,4 @@
-package at.renehollander.advancedmanager.scripting.eventloop;
+package at.renehollander.advancedmanager.scripting.eventloop.util;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

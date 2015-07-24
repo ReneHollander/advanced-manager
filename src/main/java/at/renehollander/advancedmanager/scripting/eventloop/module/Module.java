@@ -1,82 +1,30 @@
 package at.renehollander.advancedmanager.scripting.eventloop.module;
 
-import at.renehollander.advancedmanager.scripting.eventloop.EventLoop;
-import jdk.nashorn.api.scripting.NashornScriptEngine;
+import at.renehollander.advancedmanager.scripting.eventloop.ScriptEnviroment;
 
 public abstract class Module {
 
-    protected String moduleName;
-    protected NashornScriptEngine engine;
-    protected EventLoop eventLoop;
+    private ScriptEnviroment enviroment;
 
-    private Object exports;
-    protected boolean loaded;
-
-    public Module(String moduleName, NashornScriptEngine engine, EventLoop eventLoop) {
-        this.moduleName = moduleName;
-        this.engine = engine;
-        this.eventLoop = eventLoop;
-
-        this.exports = null;
-
-        load();
+    public Module(ScriptEnviroment enviroment) {
+        this.enviroment = enviroment;
     }
 
     protected abstract void load();
 
     /**
-     * Getter for property 'moduleName'.
+     * Getter for property 'enviroment'.
      *
-     * @return Value for property 'moduleName'.
+     * @return Value for property 'enviroment'.
      */
-    public String getModuleName() {
-        return moduleName;
-    }
-
-    /**
-     * Getter for property 'engine'.
-     *
-     * @return Value for property 'engine'.
-     */
-    public NashornScriptEngine getEngine() {
-        return engine;
-    }
-
-    /**
-     * Getter for property 'eventLoop'.
-     *
-     * @return Value for property 'eventLoop'.
-     */
-    public EventLoop getEventLoop() {
-        return eventLoop;
-    }
-
-    /**
-     * Getter for property 'exports'.
-     *
-     * @return Value for property 'exports'.
-     */
-    public Object getExports() {
-        return exports;
-    }
-
-    /**
-     * Getter for property 'loaded'.
-     *
-     * @return Value for property 'loaded'.
-     */
-    public boolean isLoaded() {
-        return loaded;
+    public ScriptEnviroment getEnviroment() {
+        return enviroment;
     }
 
     @Override
     public String toString() {
         return "Module{" +
-                "moduleName='" + moduleName + '\'' +
-                ", engine=" + engine +
-                ", eventLoop=" + eventLoop +
-                ", exports=" + exports +
-                ", loaded=" + loaded +
+                "enviroment=" + enviroment +
                 '}';
     }
 }
