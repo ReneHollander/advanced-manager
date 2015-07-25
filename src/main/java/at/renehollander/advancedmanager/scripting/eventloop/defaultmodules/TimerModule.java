@@ -33,12 +33,7 @@ public class TimerModule extends BaseModule {
 
     public TimerTask setTimeout(ScriptObjectMirror somCb, int duration) {
         Callback.Empty cb = somCb.to(Callback.Empty.class);
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                TimerModule.this.getEnviroment().getEventLoop().postEvent((Event) cb::invoke);
-            }
-        };
+        TimerTask timerTask = createTimerTask(() -> TimerModule.this.getEnviroment().getEventLoop().postEvent((Event) cb::invoke));
         getTimer().schedule(timerTask, duration);
         return timerTask;
     }
@@ -49,18 +44,22 @@ public class TimerModule extends BaseModule {
 
     public TimerTask setInterval(ScriptObjectMirror somCb, int duration) {
         Callback.Empty cb = somCb.to(Callback.Empty.class);
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                TimerModule.this.getEnviroment().getEventLoop().postEvent((Event) cb::invoke);
-            }
-        };
+        TimerTask timerTask = createTimerTask(() -> TimerModule.this.getEnviroment().getEventLoop().postEvent((Event) cb::invoke));
         getTimer().scheduleAtFixedRate(timerTask, 0, duration);
         return timerTask;
     }
 
     public void clearInterval(TimerTask timerTask) {
         timerTask.cancel();
+    }
+
+    private TimerTask createTimerTask(Runnable runnable) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                runnable.run();
+            }
+        };
     }
 
 }
