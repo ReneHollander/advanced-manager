@@ -1,4 +1,6 @@
-print("start");
+var fs = require("fs");
+
+fs.writeToFile("hello world!");
 
 setTimeout(function () {
     print("after 1 second");

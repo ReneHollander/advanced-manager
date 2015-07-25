@@ -8,17 +8,14 @@ import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ScriptEnviroment {
 
     private static final NashornScriptEngineFactory NASHORN_SCRIPT_ENGINE_FACTORY = new NashornScriptEngineFactory();
 
     private Set<Module> modules;
-    private Map<String, Module> moduleNameMapping;
+    private Map<String, NamedModule> moduleNameMapping;
 
     private EventLoop eventLoop;
     private ScriptEngine engine;
@@ -44,8 +41,26 @@ public class ScriptEnviroment {
     public void addModule(Module module) {
         this.modules.add(module);
         if (module instanceof NamedModule) {
-            this.moduleNameMapping.put(((NamedModule) module).getModuleName(), module);
+            this.moduleNameMapping.put(((NamedModule) module).getModuleName(), (NamedModule) module);
         }
+    }
+
+    /**
+     * Getter for property 'modules'.
+     *
+     * @return Value for property 'modules'.
+     */
+    public Set<Module> getModules() {
+        return Collections.unmodifiableSet(modules);
+    }
+
+    /**
+     * Getter for property 'moduleNameMapping'.
+     *
+     * @return Value for property 'moduleNameMapping'.
+     */
+    public Map<String, NamedModule> getModuleNameMapping() {
+        return Collections.unmodifiableMap(moduleNameMapping);
     }
 
     /**

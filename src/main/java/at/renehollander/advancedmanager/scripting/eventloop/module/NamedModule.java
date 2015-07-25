@@ -2,8 +2,7 @@ package at.renehollander.advancedmanager.scripting.eventloop.module;
 
 public abstract class NamedModule extends Module {
 
-    protected String moduleName;
-
+    private String moduleName;
     private Object exports;
 
     public NamedModule(String moduleName) {
@@ -27,6 +26,15 @@ public abstract class NamedModule extends Module {
      */
     public Object getExports() {
         return exports;
+    }
+
+    /**
+     * Setter for property 'exports'.
+     *
+     * @param exports Value to set for property 'exports'.
+     */
+    public void setExports(Object exports) {
+        this.exports = exports;
     }
 
     @Override

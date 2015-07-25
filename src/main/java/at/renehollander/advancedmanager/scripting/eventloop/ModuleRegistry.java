@@ -2,7 +2,7 @@ package at.renehollander.advancedmanager.scripting.eventloop;
 
 import at.renehollander.advancedmanager.scripting.eventloop.module.Module;
 import at.renehollander.advancedmanager.util.ReflectionUtil;
-import org.reflections.Reflections;
+import com.google.common.reflect.ClassPath;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
@@ -19,9 +19,11 @@ public class ModuleRegistry {
     }
 
     private void scanForModules(String packageName) {
-        Reflections reflections = new Reflections(packageName);
-        Set<Class<? extends Module>> modules = reflections.getSubTypesOf(Module.class);
-        modules.stream().forEach(this::register);
+        try {
+            ClassPath.from(Thread.currentThread().getContextClassLoader()).getTopLevelClassesRecursive(packageName).stream().map(ClassPath.ClassInfo::load).filter(ModuleRegistry::isModule).map((clazz) -> clazz.asSubclass(Module.class)).forEach(this::register);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ScriptEnviroment createScriptEnviroment() throws IllegalAccessException, InstantiationException {
@@ -55,6 +57,10 @@ public class ModuleRegistry {
             this.moduleClass = moduleClass;
             this.scriptEnviromentField = scriptEnviromentField;
         }
+    }
+
+    private static boolean isModule(Class<?> clazz) {
+        return clazz.getSuperclass() == Module.class || clazz.getSuperclass() != null && isModule(clazz.getSuperclass());
     }
 
 }
