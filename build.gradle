@@ -40,6 +40,7 @@ dependencies {
     compile 'org.jgrapht:jgrapht-ext:0.9.1'
     compile 'com.github.monkeysintown:jgraphx:3.1.2.1'
     compile 'de.ruedigermoeller:fst:2.29'
+    compile 'org.reflections:reflections:0.9.10'
 }
 
 sourceSets {

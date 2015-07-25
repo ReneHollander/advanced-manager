@@ -1,3 +1,5 @@
+print("start");
+
 setTimeout(function () {
     print("after 1 second");
 }, 1000);

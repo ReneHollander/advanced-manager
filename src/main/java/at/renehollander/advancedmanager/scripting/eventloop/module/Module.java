@@ -6,11 +6,13 @@ public abstract class Module {
 
     private ScriptEnviroment enviroment;
 
-    public Module(ScriptEnviroment enviroment) {
-        this.enviroment = enviroment;
+    public Module() {
     }
 
     public void load() {
+        if (enviroment == null) {
+            throw new RuntimeException("enviroment not injected!");
+        }
     }
 
     public void unload() {

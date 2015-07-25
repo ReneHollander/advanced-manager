@@ -1,15 +1,12 @@
 package at.renehollander.advancedmanager.scripting.eventloop.module;
 
-import at.renehollander.advancedmanager.scripting.eventloop.ScriptEnviroment;
-
 public abstract class NamedModule extends Module {
 
     protected String moduleName;
 
     private Object exports;
 
-    public NamedModule(ScriptEnviroment enviroment, String moduleName) {
-        super(enviroment);
+    public NamedModule(String moduleName) {
         this.moduleName = moduleName;
         this.exports = null;
     }

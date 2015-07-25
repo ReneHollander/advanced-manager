@@ -1,19 +1,18 @@
 package at.renehollander.advancedmanager.scripting.eventloop;
 
-import jdk.nashorn.api.scripting.NashornScriptEngine;
-import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
+import org.apache.commons.io.IOUtils;
 
 import javax.script.ScriptException;
-import javax.script.SimpleBindings;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 public class Main {
 
-    private NashornScriptEngine se;
-    private EventLoop eventLoop;
+    public Main() throws ScriptException, IOException, InstantiationException, IllegalAccessException {
+        ScriptEnviroment se = ModuleRegistry.instance().createScriptEnviroment();
 
-    public Main() throws ScriptException, FileNotFoundException {
+        se.execute(IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream("test.js"), StandardCharsets.UTF_8));
+        /*
         this.eventLoop = new EventLoop();
         NashornScriptEngineFactory factory = new NashornScriptEngineFactory();
         se = (NashornScriptEngine) factory.getScriptEngine();
@@ -36,14 +35,10 @@ public class Main {
         };
         t.setName("ScriptEngineThread");
         t.start();
+        */
     }
 
-    public Object require(String moduleName) {
-        return moduleName;
-    }
-
-
-    public static void main(String[] args) throws ScriptException, FileNotFoundException {
+    public static void main(String[] args) throws Exception {
         new Main();
     }
 

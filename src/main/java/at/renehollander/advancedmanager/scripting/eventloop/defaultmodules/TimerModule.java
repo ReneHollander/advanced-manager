@@ -1,6 +1,5 @@
 package at.renehollander.advancedmanager.scripting.eventloop.defaultmodules;
 
-import at.renehollander.advancedmanager.scripting.eventloop.ScriptEnviroment;
 import at.renehollander.advancedmanager.scripting.eventloop.event.Event;
 import at.renehollander.advancedmanager.scripting.eventloop.module.Module;
 import at.renehollander.advancedmanager.scripting.eventloop.util.Callback;
@@ -14,8 +13,7 @@ public class TimerModule extends Module {
 
     private Timer timer;
 
-    public TimerModule(ScriptEnviroment enviroment) {
-        super(enviroment);
+    public TimerModule() {
     }
 
     public void load() {
@@ -47,7 +45,7 @@ public class TimerModule extends Module {
     public TimerTask setInterval(ScriptObjectMirror somCb, int duration) {
         Callback.Empty cb = somCb.to(Callback.Empty.class);
         TimerTask timerTask = createTimerTask(() -> TimerModule.this.getEnviroment().getEventLoop().postEvent((Event) cb::invoke));
-        timer.scheduleAtFixedRate(timerTask, 0, duration);
+        timer.scheduleAtFixedRate(timerTask, duration, duration);
         return timerTask;
     }
 

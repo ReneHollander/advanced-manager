@@ -16,4 +16,15 @@ public class ReflectionUtil {
         return fields;
     }
 
+    public static Field getField(Class<?> type, String name) {
+        try {
+            return type.getDeclaredField(name);
+        } catch (NoSuchFieldException e) {
+            if (type.getSuperclass() != null) {
+                return getField(type.getSuperclass(), name);
+            } else {
+                throw new RuntimeException(new NoSuchFieldException(name));
+            }
+        }
+    }
 }
