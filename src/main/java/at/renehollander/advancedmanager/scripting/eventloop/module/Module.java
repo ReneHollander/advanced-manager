@@ -10,7 +10,11 @@ public abstract class Module {
         this.enviroment = enviroment;
     }
 
-    protected abstract void load();
+    public void load() {
+    }
+
+    public void unload() {
+    }
 
     /**
      * Getter for property 'enviroment'.

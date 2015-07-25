@@ -2,17 +2,16 @@ package at.renehollander.advancedmanager.scripting.eventloop.module;
 
 import at.renehollander.advancedmanager.scripting.eventloop.ScriptEnviroment;
 
-public abstract class SimpleModule extends Module {
+public abstract class NamedModule extends Module {
 
     protected String moduleName;
 
     private Object exports;
 
-    public SimpleModule(ScriptEnviroment enviroment, String moduleName) {
+    public NamedModule(ScriptEnviroment enviroment, String moduleName) {
         super(enviroment);
         this.moduleName = moduleName;
         this.exports = null;
-        load();
     }
 
     /**
@@ -35,7 +34,7 @@ public abstract class SimpleModule extends Module {
 
     @Override
     public String toString() {
-        return "SimpleModule{" +
+        return "NamedModule{" +
                 "moduleName='" + moduleName + '\'' +
                 ", exports=" + exports +
                 '}';
