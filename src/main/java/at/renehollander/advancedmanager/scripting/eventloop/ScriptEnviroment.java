@@ -1,6 +1,7 @@
 package at.renehollander.advancedmanager.scripting.eventloop;
 
 import at.renehollander.advancedmanager.scripting.eventloop.module.Module;
+import at.renehollander.advancedmanager.scripting.eventloop.module.NamedModule;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 import javax.script.Bindings;
@@ -8,19 +9,24 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ScriptEnviroment {
 
     private static final NashornScriptEngineFactory NASHORN_SCRIPT_ENGINE_FACTORY = new NashornScriptEngineFactory();
 
-    private Map<String, Module> modules;
+    private Set<Module> modules;
+    private Map<String, Module> moduleNameMapping;
+
     private EventLoop eventLoop;
     private ScriptEngine engine;
     private Bindings bindings;
 
     public ScriptEnviroment() {
-        this.modules = new HashMap<>();
+        this.modules = new HashSet<>();
+        this.moduleNameMapping = new HashMap<>();
         this.eventLoop = new EventLoop();
         this.engine = NASHORN_SCRIPT_ENGINE_FACTORY.getScriptEngine();
         this.bindings = new SimpleBindings();
@@ -35,13 +41,11 @@ public class ScriptEnviroment {
         return engine;
     }
 
-    /**
-     * Getter for property 'modules'.
-     *
-     * @return Value for property 'modules'.
-     */
-    public Map<String, Module> getModules() {
-        return modules;
+    public void addModule(Module module) {
+        this.modules.add(module);
+        if (module instanceof NamedModule) {
+            this.moduleNameMapping.put(((NamedModule) module).getModuleName(), module);
+        }
     }
 
     /**

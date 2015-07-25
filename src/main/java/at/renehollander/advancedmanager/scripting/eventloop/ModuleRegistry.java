@@ -1,7 +1,6 @@
 package at.renehollander.advancedmanager.scripting.eventloop;
 
 import at.renehollander.advancedmanager.scripting.eventloop.module.Module;
-import at.renehollander.advancedmanager.scripting.eventloop.module.NamedModule;
 import at.renehollander.advancedmanager.util.ReflectionUtil;
 import org.reflections.Reflections;
 
@@ -32,9 +31,7 @@ public class ModuleRegistry {
             module.scriptEnviromentField.setAccessible(true);
             module.scriptEnviromentField.set(instance, scriptEnviroment);
             module.scriptEnviromentField.setAccessible(false);
-            if (instance instanceof NamedModule) {
-                scriptEnviroment.getModules().put(((NamedModule) instance).getModuleName(), instance);
-            }
+            scriptEnviroment.addModule(instance);
             instance.load();
         }
         return scriptEnviroment;
