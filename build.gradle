@@ -41,6 +41,7 @@ dependencies {
     compile 'com.github.monkeysintown:jgraphx:3.1.2.1'
     compile 'de.ruedigermoeller:fst:2.29'
     compile 'org.reflections:reflections:0.9.10'
+    compile 'com.eclipsesource.j2v8:j2v8_linux_x86_64:3.0.0'
 }
 
 sourceSets {
