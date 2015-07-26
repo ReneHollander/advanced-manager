@@ -31,6 +31,20 @@ public class ScriptEnviroment {
 
     public void execute(String script) throws ScriptException {
         getEngine().eval(script, getBindings());
+       /*
+        Map<String, Object> options = new HashMap<>();
+        options.put("script", script);
+        options.put("name", "src/main/javascript/test.js");
+
+        Invocable invocable = (Invocable) getEngine();
+        try {
+            getEngine().setBindings(getBindings(), ScriptContext.ENGINE_SCOPE);
+            NashornScriptEngine eng = (NashornScriptEngine) getEngine();
+            invocable.invokeFunction("load", options);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        */
         getEventLoop().start();
     }
 
